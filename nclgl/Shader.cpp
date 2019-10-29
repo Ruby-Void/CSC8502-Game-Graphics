@@ -89,5 +89,5 @@ bool Shader::LinkProgram() {
 
 	GLint code;
 	glGetProgramiv(program, GL_LINK_STATUS, &code);
-	return code == GL_TRUE ? true : false;
+	return (code == GL_TRUE) ? true : false;
 }

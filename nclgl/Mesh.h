@@ -14,7 +14,6 @@ public:
 	static Mesh* GenerateTriangle();
 
 protected:
-	GLuint objectName;
 	GLuint arrayObject;
 	GLuint bufferObject[MAX_BUFFER];
 	GLuint numVertices;

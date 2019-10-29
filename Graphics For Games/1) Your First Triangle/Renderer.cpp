@@ -1,10 +1,9 @@
 #include "Renderer.h"
 
-Renderer::Renderer(Window &parent) : OGLRenderer(parent)	{
+Renderer::Renderer(Window& parent) : OGLRenderer(parent)	{
 	triangle = Mesh::GenerateTriangle();
 
-	currentShader = new Shader(SHADERDIR"basicVertex.glsl",
-		SHADERDIR"colourFragment.glsl");
+	currentShader = new Shader(SHADERDIR"basicVertex.glsl", SHADERDIR"colourFragment.glsl");
 
 	if(!currentShader->LinkProgram()) {
 		return;
@@ -17,7 +16,7 @@ Renderer::~Renderer(void)	{
 }
 
 void Renderer::RenderScene()	{
-	glClearColor(0.2f,0.2f,0.2f,1.0f);
+	glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);	
 
 	glUseProgram(currentShader->GetProgram());
@@ -26,4 +25,3 @@ void Renderer::RenderScene()	{
 
 	SwapBuffers();	
 }
-

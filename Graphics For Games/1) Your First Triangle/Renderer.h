@@ -8,5 +8,5 @@ public:
 	virtual void RenderScene();
 
 protected:
-	Mesh*	triangle;
+	Mesh* triangle;
 };

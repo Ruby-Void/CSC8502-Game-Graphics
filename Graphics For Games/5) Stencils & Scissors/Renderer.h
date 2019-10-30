@@ -8,19 +8,10 @@ public:
 
 	virtual void RenderScene();
 
-	void ToggleObject();
-	void ToggleDepth();
-	void ToggleAlphaBlend();
-	void ToggleBlendMode();
-	void MoveObject(float by);
+	void ToggleScissor();
+	void ToggleStencil();
 
 protected:
-	Mesh* meshes[2];
-	Vector3 positions[2];
-	GLuint textures[2];
-
-	Matrix4 textureMatrix, modelMatrix, projMatrix, viewMatrix;
-
-	int blendMode;
-	bool modifyObject, usingDepth, usingAlpha;
+	Mesh* triangle, * quad;
+	bool usingScissor = false, usingStencil = false;
 };

@@ -12,6 +12,7 @@ public:
 
 	virtual void Draw();
 	static Mesh* GenerateTriangle();
+	static Mesh* GenerateQuad();
 
 	GLuint GetTexture() { return texture; }
 	void SetTexture(GLuint tex) { texture = tex; }

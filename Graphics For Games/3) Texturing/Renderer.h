@@ -8,13 +8,19 @@ public:
 
 	virtual void RenderScene();
 
-	void UpdateTextureMatrix(float rotation);
-	void ToggleRepeating();
-	void ToggleFiltering();
+	void ToggleObject();
+	void ToggleDepth();
+	void ToggleAlphaBlend();
+	void ToggleBlendMode();
+	void MoveObject(float by);
 
 protected:
-	Mesh* triangle;
+	Mesh* meshes[2];
+	Vector3 positions[2];
+	GLuint textures[2];
 
-	bool filtering;
-	bool repeating;
+	Matrix4 textureMatrix, modelMatrix, projMatrix, viewMatrix;
+
+	int blendMode;
+	bool modifyObject, usingDepth, usingAlpha;
 };

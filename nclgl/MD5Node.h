@@ -28,7 +28,7 @@ _-_-_-_-_-_-_-""  ""
 *//////////////////////////////////////////////////////////////////////////////
 #include "common.h"
 #ifdef USE_MD5MESH
-#ifdef WEEK_2_CODE
+
 #pragma once
 #include "scenenode.h"
 #include "MD5FileData.h"
@@ -101,5 +101,4 @@ protected:
 	float				frameTime;
 	unsigned int		currentAnimFrame;	//Current frame of animation
 };
-#endif
 #endif

@@ -19,7 +19,7 @@ _-_-_-_-_-_-_-""  ""
 *//////////////////////////////////////////////////////////////////////////////
 #include "common.h"
 #ifdef USE_MD5MESH
-#ifdef WEEK_2_CODE
+
 #pragma once
 
 #include <fstream>
@@ -177,5 +177,4 @@ protected:
 	MD5Frame*		frames;			//Array of individual frames for this animation
 	MD5BaseFrame	baseFrame;		//BaseFrame for this animation
 };
-#endif
 #endif

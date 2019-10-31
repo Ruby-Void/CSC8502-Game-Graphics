@@ -1,7 +1,9 @@
 #include "CubeRobot.h"
 
-CubeRobot::CubeRobot(void) {
-	cube = NULL;
+Mesh* CubeRobot::cube = NULL;
+
+CubeRobot::CubeRobot(void) {	
+	//SetMesh(cube); //Optional, uncomment if you want a local origin marker
 
 	SceneNode* body = new SceneNode(cube, Vector4(1, 0, 0, 1)); // Red !
 	body->SetModelScale(Vector3(10, 15, 5));
@@ -34,7 +36,7 @@ CubeRobot::CubeRobot(void) {
 	body->AddChild(rightLeg);
 }
 
-void CubeRobot::update(float msec) {
+void CubeRobot::Update(float msec) {
 	transform = transform * Matrix4::Rotation(msec / 10.0f, Vector3(0, 1, 0));
 	head->SetTransform(head->GetTransform() * Matrix4::Rotation(-msec / 10.0f, Vector3(0, 1, 0)));
 	leftArm->SetTransform(leftArm->GetTransform() * Matrix4::Rotation(-msec / 10.0f, Vector3(1, 0, 0)));
@@ -44,7 +46,7 @@ void CubeRobot::update(float msec) {
 
 void CubeRobot::CreateCube() {
 	OBJMesh* m = new OBJMesh();
-	m->LoadOBJMesh(MESHDIR "cube.obj");
+	m->LoadOBJMesh(MESHDIR"cube.obj");
 	cube = m;
 }
 

@@ -8,21 +8,17 @@ enum MeshBuffer {
 class Mesh {
 public:
 	Mesh(void);
-	~Mesh(void);
+	~Mesh(void);	
+
+	GLuint GetTexture() { return texture; }
+	void SetTexture(GLuint tex) { texture = tex; }
 
 	virtual void Draw();
 	static Mesh* GenerateTriangle();
 	static Mesh* GenerateQuad();
 
-	GLuint GetTexture() { return texture; }
-	void SetTexture(GLuint tex) { texture = tex; }
-
 protected:
-	GLuint arrayObject;
-	GLuint bufferObject[MAX_BUFFER];
-	GLuint numVertices;
-	GLuint type;
-	GLuint texture;
+	GLuint arrayObject, bufferObject[MAX_BUFFER], numVertices, type, texture;
 
 	Vector2* textureCoords;
 	Vector3* vertices;

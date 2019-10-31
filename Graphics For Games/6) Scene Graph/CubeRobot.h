@@ -7,7 +7,7 @@ public:
 	CubeRobot(void);
 	~CubeRobot(void) {};
 
-	virtual void update(float msec);
+	virtual void Update(float msec);
 
 	static void CreateCube();
 	static void DeleteCube();

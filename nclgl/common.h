@@ -11,10 +11,6 @@ _-_-_-_-_-_-_-""  ""
 *//////////////////////////////////////////////////////////////////////////////
 
 #pragma once
-
-//#define WEEK_2_CODE
-//#define WEEK_3_CODE
-
 /*
 As this tutorial series progresses, you'll learn how to generate normals, tangents,
 and how to use bumpmaps. In order for this class to compile before these features

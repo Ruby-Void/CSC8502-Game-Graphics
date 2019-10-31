@@ -1,7 +1,4 @@
-﻿  Camera.cpp
-  Mesh.cpp
-  OGLRenderer.cpp
-  Shader.cpp
-  Window.cpp
+﻿  Frustum.cpp
+  Plane.cpp
   Generating Code...
-  nclgl.vcxproj -> H:\C++\Coursework\CSC8502-Game-Graphics\Graphics For Games\Debug\nclgl.lib
+  nclgl.vcxproj -> C:\Users\b9059529\Documents\C++\Coursework\CSC8502-Game-Graphics\Graphics For Games\Debug\nclgl.lib

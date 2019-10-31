@@ -11,12 +11,11 @@ class Shader {
 public:
 	Shader(string vertex, string fragment, string geometry = "");
 	~Shader(void);
-
 	GLuint GetProgram() { return program; }
 	bool LinkProgram();
+
 protected:
-	GLuint objects[3];
-	GLuint program;
+	GLuint objects[3], program;
 	bool loadFailed;
 
 	void SetDefaultAttributes();

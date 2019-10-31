@@ -1,9 +1,8 @@
 #include "Renderer.h"
 
-Renderer::Renderer(Window& parent) : OGLRenderer(parent) {
-	triangle = Mesh::GenerateTriangle();
+Renderer::Renderer(Window& parent) : OGLRenderer(parent),  usingScissor(false), usingStencil(false) {
+	triangle = Mesh::GenerateTriangle(); 
 	quad = Mesh::GenerateQuad();
-
 	currentShader = new Shader(SHADERDIR"TexturedVertex.glsl", SHADERDIR"StencilFragment.glsl");
 
 	if (!currentShader->LinkProgram()) {
@@ -16,8 +15,7 @@ Renderer::Renderer(Window& parent) : OGLRenderer(parent) {
 	if (!triangle->GetTexture() || !quad->GetTexture()) {
 		return;
 	}
-
-	usingScissor = usingStencil = false;
+	
 	init = true;
 }
 

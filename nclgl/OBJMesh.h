@@ -65,8 +65,6 @@ time lighting tutorial, uncomment both OBJ_USE_NORMALS and OBJ_USE_TANGENTS_BUMP
 */
 
 #include "common.h"
-#ifdef WEEK_2_CODE
-
 #pragma once
 
 #include <fstream>
@@ -145,5 +143,3 @@ protected:
 
 	map <string, MTLInfo> materials;
 };
-
-#endif

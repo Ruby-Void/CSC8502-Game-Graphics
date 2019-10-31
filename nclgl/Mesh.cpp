@@ -1,17 +1,10 @@
 #include "Mesh.h"
 
-Mesh::Mesh(void) {
+Mesh::Mesh(void) : numVertices(0), texture(0), vertices(NULL), colours(NULL), textureCoords(NULL), type(GL_TRIANGLES) {
 	for (int i = 0; i < MAX_BUFFER; i++) {
 		bufferObject[i] = 0;
 	}
 	glGenVertexArrays(1, &arrayObject);
-
-	numVertices = 0;
-	texture = 0;
-	vertices = NULL;
-	colours = NULL;
-	textureCoords = NULL;
-	type = GL_TRIANGLES;
 }
 
 Mesh::~Mesh() {

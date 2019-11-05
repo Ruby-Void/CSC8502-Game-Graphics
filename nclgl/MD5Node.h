@@ -28,7 +28,7 @@ _-_-_-_-_-_-_-""  ""
 *//////////////////////////////////////////////////////////////////////////////
 #include "common.h"
 #ifdef USE_MD5MESH
-
+#ifdef WEEK_2_CODE
 #pragma once
 #include "scenenode.h"
 #include "MD5FileData.h"
@@ -39,19 +39,15 @@ public:
 	MD5Node(const MD5FileData &ofType);
 	~MD5Node(void);
 
-	/*
-	Updates the skeleton according to the animation frames held in the current
-	applied MD5Anim.
-	*/
+	// Updates the skeleton according to the animation frames held in the current
+	// applied MD5Anim.
 	virtual void	Update(float msec);
 	virtual void	Draw(const OGLRenderer &r);
 
-	/*
-	Searches the map of animations for an MD5Anim with the passed in name, and
-	starts applying it to the current MD5Mesh
-	*/
-	void	PlayAnim(std::string name);	
-
+	// Searches the map of animations for an MD5Anim with the passed in name, and
+	// starts applying it to the current MD5Mesh
+	void	PlayAnim(std::string name);
+	void	PlayAnim(std::string name, unsigned int frame);	
 
 	bool	GetParentLocalOrientation(const string&name, Quaternion &t);
 	bool	GetParentWorldOrientation(const string&name, Quaternion &t);
@@ -101,4 +97,5 @@ protected:
 	float				frameTime;
 	unsigned int		currentAnimFrame;	//Current frame of animation
 };
+#endif
 #endif

@@ -14,26 +14,21 @@ _-_-_-_-_-_-_-""  ""
 
 */
 #include "Common.h"
-
-#include <string>
-#include <fstream>
-#include <vector>
-
 #include "GL/glew.h"
 #include "GL/wglew.h"
-
 #include "SOIL.h"
-
 #include "Vector4.h"
 #include "Vector3.h"
 #include "Vector2.h"
 #include "Quaternion.h"
 #include "Matrix4.h"
 #include "Window.h"
-//#include "light.h"
-
 #include "Shader.h"		//Students make this file...
 #include "Mesh.h"		//And this one...
+#include "light.h"
+#include <string>
+#include <fstream>
+#include <vector>
 
 using std::vector;
 
@@ -120,7 +115,7 @@ protected:
 
 	void			SetTextureRepeating(GLuint target, bool state);
 
-	//void			SetShaderLight(const Light &l);
+	void			SetShaderLight(const Light &l);
 
 	void			DrawDebugPerspective(Matrix4*matrix = 0);
 	void			DrawDebugOrtho(Matrix4*matrix = 0);

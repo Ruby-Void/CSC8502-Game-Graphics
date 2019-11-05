@@ -11,7 +11,6 @@ _-_-_-_-_-_-_-""  ""
 
 */
 #pragma once
-
 #include "Vector3.h"
 
 class Vector4	{

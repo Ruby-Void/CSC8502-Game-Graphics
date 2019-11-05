@@ -1,6 +1,6 @@
 #include "MD5Node.h"
 #ifdef USE_MD5MESH
-
+#ifdef WEEK_2_CODE
 MD5Node::MD5Node(const MD5FileData &ofType) : sourceData(ofType)	{
 	currentAnim		 = NULL;
 	frameTime		 = 0.0f;
@@ -23,7 +23,6 @@ float is then reset to the framerate defined within the current animation. A
 while is used instead of an if for the unusual occurance of a time value being
 large enough that we could risk skipping over frames - generally this only 
 happens when we hit a debug breakpoint.
-
 */
 void	MD5Node::Update(float msec) {
 	if(currentAnim) {
@@ -44,18 +43,19 @@ void	MD5Node::Update(float msec) {
 	SceneNode::Update(msec);
 }
 
+// Swaps the currently used animation of this MD5Mesh. 
+void MD5Node::PlayAnim(std::string name) {
+	// We want to reset all of the animation details
+	currentAnimFrame = 0;
+	frameTime = 0.0f;
+	currentAnim = sourceData.GetAnim(name);
+}
 
-
-/*
-Swaps the currently used animation of this MD5Mesh. 
-*/
-void	MD5Node::PlayAnim(std::string name)	{
-/*
-We want to reset all of the animation details
-*/
-	currentAnimFrame	= 0;
-	frameTime			= 0.0f; 
-	currentAnim			= sourceData.GetAnim(name);
+void MD5Node::PlayAnim(std::string name, unsigned int frame)	{
+// We want to reset all of the animation details
+	currentAnimFrame = frame;
+	frameTime = 0.0f;
+	currentAnim = sourceData.GetAnim(name);
 }
 
 void	MD5Node::Draw(const OGLRenderer &r) {
@@ -94,7 +94,7 @@ void	MD5Node::Draw(const OGLRenderer &r) {
 	*/
 	m->SkinVertices(currentSkeleton);
 #endif
-	//Finally, we draw the mesh, just like the base class Draw function...
+	// Finally, we draw the mesh, just like the base class Draw function...
 	m->Draw();
 }
 
@@ -352,4 +352,5 @@ void	MD5Node::DebugDrawJointTransforms(float size, bool worldSpace) {
 	delete[]skeletonVertices;
 	delete[]skeletonColours;
 }
+#endif
 #endif

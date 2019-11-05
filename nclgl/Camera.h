@@ -12,25 +12,17 @@ _-_-_-_-_-_-_-""  ""
 
 *//////////////////////////////////////////////////////////////////////////////
 #pragma once
-
 #include "Window.h"
 #include "Matrix4.h"
 #include "Vector3.h"
 
-class Camera	{
+class Camera {
 public:
-	Camera(void){
-		yaw		= 0.0f;
-		pitch	= 0.0f;
-	};
+	Camera(void) : yaw(0.0f), pitch(0.0f) {};
 
-	Camera(float pitch, float yaw, Vector3 position){
-		this->pitch		= pitch;
-		this->yaw		= yaw;
-		this->position	= position;
-	}
+	Camera(float pitch, float yaw, Vector3 position) : pitch(pitch), yaw(yaw), position(position) {}
 
-	~Camera(void){};
+	~Camera(void) {};
 
 	void UpdateCamera(float msec = 10.0f);
 
@@ -39,22 +31,22 @@ public:
 	Matrix4 BuildViewMatrix();
 
 	//Gets position in world space
-	Vector3 GetPosition() const { return position;}
+	Vector3 GetPosition() const { return position; }
 	//Sets position in world space
-	void	SetPosition(Vector3 val) { position = val;}
+	void SetPosition(Vector3 val) { position = val; }
 
 	//Gets yaw, in degrees
-	float	GetYaw()   const { return yaw;}
+	float GetYaw()   const { return yaw; }
 	//Sets yaw, in degrees
-	void	SetYaw(float y) {yaw = y;}
+	void SetYaw(float y) { yaw = y; }
 
 	//Gets pitch, in degrees
-	float	GetPitch() const { return pitch;}
+	float GetPitch() const { return pitch; }
 	//Sets pitch, in degrees
-	void	SetPitch(float p) {pitch = p;}
+	void SetPitch(float p) { pitch = p; }
 
 protected:
-	float	yaw;
-	float	pitch;
+	float yaw;
+	float pitch;
 	Vector3 position;
 };

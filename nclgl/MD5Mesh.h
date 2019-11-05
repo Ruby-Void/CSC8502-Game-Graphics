@@ -31,6 +31,7 @@ _-_-_-_-_-_-_-""  ""
 *//////////////////////////////////////////////////////////////////////////////
 #include "common.h"
 #ifdef USE_MD5MESH
+#ifdef WEEK_2_CODE
 #pragma once
 
 
@@ -117,4 +118,5 @@ protected:
 
 	const MD5FileData &	type;
 };
+#endif
 #endif

@@ -231,16 +231,15 @@ call.
 */
 void OGLRenderer::UpdateShaderMatrices()	{
 	if(currentShader) {
-		glUniformMatrix4fv(glGetUniformLocation(currentShader->GetProgram(), "modelMatrix"), 1, false, (float*)&modelMatrix);
-		glUniformMatrix4fv(glGetUniformLocation(currentShader->GetProgram(), "viewMatrix"), 1, false, (float*)&viewMatrix);
-		glUniformMatrix4fv(glGetUniformLocation(currentShader->GetProgram(), "projMatrix"), 1, false, (float*)&projMatrix);
-		glUniformMatrix4fv(glGetUniformLocation(currentShader->GetProgram(), "textureMatrix"), 1, false, (float*)&textureMatrix);
+		glUniformMatrix4fv(glGetUniformLocation(currentShader->GetProgram(), "modelMatrix"),	1,false, (float*)&modelMatrix);
+		glUniformMatrix4fv(glGetUniformLocation(currentShader->GetProgram(), "viewMatrix") ,	1,false, (float*)&viewMatrix);
+		glUniformMatrix4fv(glGetUniformLocation(currentShader->GetProgram(), "projMatrix") ,	1,false, (float*)&projMatrix);
+		glUniformMatrix4fv(glGetUniformLocation(currentShader->GetProgram(), "textureMatrix")  ,1,false, (float*)&textureMatrix);
 	}
 }
 
 void OGLRenderer::SetCurrentShader(Shader*s) {
 	currentShader = s;
-
 	glUseProgram(s->GetProgram());
 }
 
@@ -251,16 +250,15 @@ void OGLRenderer::SetTextureRepeating( GLuint target, bool repeating )	{
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-//void OGLRenderer::SetShaderLight(const Light &l) {
-//	glUniform3fv(glGetUniformLocation(currentShader->GetProgram(), "lightPos")   ,1,(float*)&l.GetPosition());
-//	glUniform4fv(glGetUniformLocation(currentShader->GetProgram(), "lightColour"),1,(float*)&l.GetColour());
-//	glUniform1f(glGetUniformLocation(currentShader->GetProgram() , "lightRadius"),l.GetRadius());
-//}
+void OGLRenderer::SetShaderLight(const Light &l) {
+	glUniform3fv(glGetUniformLocation(currentShader->GetProgram(), "lightPos")   , 1, (float*)&l.GetPosition());
+	glUniform4fv(glGetUniformLocation(currentShader->GetProgram(), "lightColour"), 1, (float*)&l.GetColour());
+	glUniform1f(glGetUniformLocation(currentShader->GetProgram() , "lightRadius"), l.GetRadius());
+}
 
 #ifdef OPENGL_DEBUGGING
 void OGLRenderer::DebugCallback(GLuint source, GLuint type,GLuint id, GLuint severity,
-	int length, const char* message, void* userParam)	{
-
+	int length, const char* message, void* userParam) {
 		string sourceName;
 		string typeName;
 		string severityName;

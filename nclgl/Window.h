@@ -5,18 +5,15 @@ Description:Creates and handles the Window, including the initialisation of the 
 */
 #pragma once
 #pragma warning( disable : 4099 )
-
-#include <string>
-
-#include <windows.h>
-#include <io.h>
-#include <stdio.h>
-#include <fcntl.h>
-
 #include "OGLRenderer.h"
 #include "Keyboard.h"
 #include "Mouse.h"
 #include "GameTimer.h"
+#include <string>
+#include <windows.h>
+#include <io.h>
+#include <stdio.h>
+#include <fcntl.h>
 
 #define WIN32_LEAN_AND_MEAN
 #define VC_EXTRALEAN

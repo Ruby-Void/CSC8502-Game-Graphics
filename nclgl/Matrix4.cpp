@@ -26,7 +26,7 @@ void Matrix4::ToZero()	{
 	}
 }
 
-Vector3 Matrix4::GetPositionVector() const{
+Vector3 Matrix4::GetPositionVector() const {
 	return Vector3(values[12],values[13],values[14]);
 }
 

@@ -5,9 +5,7 @@ Renderer::Renderer(Window& parent) : OGLRenderer(parent) {
 	camera = new Camera();
 	currentShader = new Shader(SHADERDIR"SceneVertex.glsl", SHADERDIR"SceneFragment.glsl");
 
-	if (!currentShader->LinkProgram()) {
-		return;
-	}
+	if (!currentShader->LinkProgram()) { return; }
 
 	projMatrix = Matrix4::Perspective(1.0f, 10000.0f, (float)width / (float)height, 45.0f);
 	
@@ -48,7 +46,7 @@ void Renderer::DrawNode(SceneNode* n) {
 		glUniformMatrix4fv(glGetUniformLocation(currentShader->GetProgram(), "modelMatrix"), 1, false, (float*)&transform);
 		glUniform4fv(glGetUniformLocation(currentShader->GetProgram(), "nodeColour"), 1, (float*)&n->GetColour());
 		glUniform1i(glGetUniformLocation(currentShader->GetProgram(), "useTexture"), (int)n->GetMesh()->GetTexture()); 
-		n->Draw(*this);
+		n->Draw();
 	}
 
 	for (vector < SceneNode* >::const_iterator i = n->GetChildIteratorStart(); i != n->GetChildIteratorEnd(); ++i) {

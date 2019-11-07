@@ -32,26 +32,16 @@ Renderer::Renderer(Window& parent) : OGLRenderer(parent), rotation(0.0f) {
 	SetTextureRepeating(heightMap->GetBumpMap(), true);
 
 	sphere = new OBJMesh();
-	if (!sphere->LoadOBJMesh(MESHDIR"ico.obj")) {
-		return;
-	}
+	if (!sphere->LoadOBJMesh(MESHDIR"ico.obj")) { return; }
 
-	sceneShader = new Shader(SHADERDIR"bumpVertex.glsl", SHADERDIR"bufferFragment.glsl");
-	if (!sceneShader->LinkProgram()) {
-		return;
+	sceneShader = new Shader(SHADERDIR"BumpVertex.glsl", SHADERDIR"BufferFragment.glsl");
+	if (!sceneShader->LinkProgram()) { return; }
 
-	}
+	combineShader = new Shader(SHADERDIR"CombineVertex.glsl", SHADERDIR"CombineFragment.glsl");
+	if (!combineShader->LinkProgram()) { return; }
 
-	combineShader = new Shader(SHADERDIR"combineVert.glsl", SHADERDIR"combineFrag.glsl");
-	if (!combineShader->LinkProgram()) {
-		return;
-
-	}
-
-	pointlightShader = new Shader(SHADERDIR"pointLightVertex.glsl", SHADERDIR"pointLightFragment.glsl");
-	if (!pointlightShader->LinkProgram()) {
-		return;
-	}
+	pointlightShader = new Shader(SHADERDIR"PointLightVertex.glsl", SHADERDIR"PointLightFragment.glsl");
+	if (!pointlightShader->LinkProgram()) { return; }
 
 	glGenFramebuffers(1, &bufferFBO);
 	glGenFramebuffers(1, &pointLightFBO);
@@ -203,7 +193,7 @@ void Renderer::DrawPointLights() {
 			SetShaderLight(l);
 			UpdateShaderMatrices();
 			float dist = (l.GetPosition() - camera->GetPosition()).Length();
-			glCullFace((dist < radius) ? GL_FRONT : GL_BACK); // Camera is inside the light volume!
+			glCullFace((dist < radius) ? GL_FRONT : GL_BACK);
 			sphere->Draw();
 		}
 	}

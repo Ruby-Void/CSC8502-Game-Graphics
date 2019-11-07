@@ -3,7 +3,7 @@
 
 class Plane {
 public:
-	Plane(void) {};
+	Plane(void) : distance(0.0f) {};
 	Plane(const Vector3& normal, float distance, bool normalise = false);
 	~Plane(void) {};
 

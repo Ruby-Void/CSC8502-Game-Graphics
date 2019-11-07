@@ -2,9 +2,9 @@
   "ExpandedNodes": [
     "",
     "\\Graphics For Games",
-    "\\Graphics For Games\\15) Deferred Shading",
+    "\\Graphics For Games\\1) Your First Triangle",
     "\\Shaders"
   ],
-  "SelectedNode": "\\Shaders\\combineFrag.glsl",
+  "SelectedNode": "\\Graphics For Games\\1) Your First Triangle\\Renderer.cpp",
   "PreviewInSolutionExplorer": false
 }

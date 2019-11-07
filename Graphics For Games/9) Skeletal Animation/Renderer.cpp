@@ -1,24 +1,26 @@
 #include "Renderer.h"
+#include <random>
 
 Renderer::Renderer(Window& parent) : OGLRenderer(parent) {
-	camera = new Camera(0, -90.0f, Vector3(-180, 60, 0));
-
-#ifdef MD5_USE_HARDWARE_SKINNING
-	currentShader = new Shader(SHADERDIR"skeletonVertex.glsl", SHADERDIR"TexturedFragment.glsl");
-#else
-	currentShader = new Shader(SHADERDIR"TexturedVertex.glsl", SHADERDIR"TexturedFragment.glsl");
-#endif
+	camera = new Camera(0, -90.0f, 0, Vector3(-180, 60, 0));
+	currentShader = new Shader(SHADERDIR"SkeletonVertex.glsl", SHADERDIR"TexturedFragment.glsl");
 
 	hellData = new MD5FileData(MESHDIR"hellknight.md5mesh");
 
-	hellNode = new MD5Node(*hellData);
-
-	if (!currentShader->LinkProgram()) {
-		return;
+	for (int i = 0; i < 5; i++) {
+		hellNode.push_back(new MD5Node(*hellData));
 	}
 
+	if (!currentShader->LinkProgram()) { return; }
+
 	hellData->AddAnim(MESHDIR"idle2.md5anim");
-	hellNode->PlayAnim(MESHDIR"idle2.md5anim", 95);
+	random_device rd;
+	mt19937 generation(rd());	
+	uniform_int_distribution<> distr(0, hellData->GetAnim(MESHDIR"idle2.md5anim")->GetNumFrames());
+
+	for (auto node : hellNode) {
+		node->PlayAnim(MESHDIR"idle2.md5anim", distr(generation));
+	}
 
 	projMatrix = Matrix4::Perspective(1.0f, 10000.0f, (float)width / (float)height, 45.0f);
 
@@ -31,14 +33,17 @@ Renderer::Renderer(Window& parent) : OGLRenderer(parent) {
 Renderer::~Renderer(void) {
 	delete camera;
 	delete hellData;
-	delete hellNode;
+	for (auto node : hellNode) {
+		delete node;
+	}
 }
 
 void Renderer::UpdateScene(float msec) {
 	camera->UpdateCamera(msec);
 	viewMatrix = camera->BuildViewMatrix();
-
-	hellNode->Update(msec);
+	for (auto node : hellNode) {
+		node->Update(msec);
+	}
 }
 
 void Renderer::RenderScene() {
@@ -57,7 +62,14 @@ void Renderer::RenderScene() {
 		}
 	}*/
 
-	hellNode->Draw(*this);
+	int y = 0;
+	int x = 0;
+	for (auto node : hellNode) {
+		modelMatrix = Matrix4::Translation(Vector3(x * 100, 0, y * 100));
+		UpdateShaderMatrices();
+		node->Draw(*this);
+		y++;
+	}
 
 	glUseProgram(0);
 	SwapBuffers();

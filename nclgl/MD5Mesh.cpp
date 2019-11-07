@@ -5,7 +5,7 @@
 MD5Mesh::MD5Mesh(const MD5FileData&t) :  type(t) {
 #ifdef MD5_USE_HARDWARE_SKINNING
 	weightObject = 0;
-	weights		 = NULL;
+	weights		 = nullptr;
 #endif
 }
 

@@ -7,7 +7,7 @@
 
 class SceneNode {
 public:
-	SceneNode(Mesh* m = NULL, Vector4 colour = Vector4(1, 1, 1, 1));
+	SceneNode(Mesh* m = nullptr, Vector4 colour = Vector4(1, 1, 1, 1));
 	~SceneNode(void);
 
 	// Accessor Methods
@@ -31,7 +31,7 @@ public:
 	static bool CompareByCameraDistance(SceneNode* a, SceneNode* b);
 	void AddChild(SceneNode* s);
 	virtual void Update(float msec);
-	virtual void Draw(const OGLRenderer& r);
+	virtual void Draw();
 	std::vector <SceneNode*>::const_iterator GetChildIteratorStart() { return children.begin(); }
 	std::vector <SceneNode*>::const_iterator GetChildIteratorEnd() { return children.end(); }
 

@@ -122,9 +122,9 @@ struct MD5Skeleton {
 	MD5Joint*joints;	//Pointer to our array of MD5Joints
 	int numJoints;		//Number of joints in the skeleton
 
-	//Always initialise pointers to null!
+	//Always initialise pointers to nullptr!
 	MD5Skeleton() {
-		joints		= NULL;
+		joints		= nullptr;
 		numJoints	= 0;
 	}
 
@@ -160,9 +160,9 @@ struct MD5SubMesh {
 #ifdef	MD5_USE_TANGENTS_BUMPMAPS
 		bumpIndex	= 0;
 #endif
-		tris		= NULL;
-		weights		= NULL;
-		verts		= NULL;
+		tris		= nullptr;
+		weights		= nullptr;
+		verts		= nullptr;
 	}
 
 	/*

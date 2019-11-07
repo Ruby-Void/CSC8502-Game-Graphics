@@ -5,14 +5,10 @@
 
 int main() {	
 	Window w("Index Buffers!", 800,600,false);
-	if(!w.HasInitialised()) {
-		return -1;
-	}
+	if(!w.HasInitialised()) { return -1; }
 
 	Renderer renderer(w);
-	if(!renderer.HasInitialised()) {
-		return -1;
-	}
+	if(!renderer.HasInitialised()) { return -1; }
 
 	w.LockMouseToWindow(true);
 	w.ShowOSPointer(false);

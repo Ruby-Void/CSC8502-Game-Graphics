@@ -3,16 +3,12 @@
 Renderer::Renderer(Window& parent) : OGLRenderer(parent) {
 	camera = new Camera(0.0f, 135.0f, Vector3(0, 500, 0));
 	quad = Mesh::GenerateQuad();
-
 	heightMap = new HeightMap(TEXTUREDIR "terrain.raw ");
 	heightMap->SetTexture(SOIL_load_OGL_texture(TEXTUREDIR"Barren Reds.JPG ", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_MIPMAPS));
-
 	sceneShader = new Shader(SHADERDIR"TexturedVertex.glsl", SHADERDIR"TexturedFragment.glsl");
 	processShader = new Shader(SHADERDIR"TexturedVertex.glsl", SHADERDIR"ProcessFragment.glsl");
 
-	if (!processShader->LinkProgram() || !sceneShader->LinkProgram() || !heightMap->GetTexture()) {
-		return;
-	}
+	if (!processShader->LinkProgram() || !sceneShader->LinkProgram() || !heightMap->GetTexture()) { return; }
 
 	SetTextureRepeating(heightMap->GetTexture(), true);	// Generate our scene depth texture ...
 	glGenTextures(1, &bufferDepthTex);
@@ -40,10 +36,7 @@ Renderer::Renderer(Window& parent) : OGLRenderer(parent) {
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, bufferColourTex[0], 0);
 
 	// We can check FBO attachment success using this command !
-	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
-		return;
-
-	}
+	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) { return; }
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glEnable(GL_DEPTH_TEST);
 	init = true;}Renderer ::~Renderer(void) {

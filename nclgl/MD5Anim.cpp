@@ -6,9 +6,9 @@ MD5Anim::MD5Anim(std::string filename)	{
 	frameRate	= 0;
 	numJoints	= 0;
 	numFrames	= 0;
-	joints		= NULL;
-	bounds		= NULL;
-	frames		= NULL;
+	joints		= nullptr;
+	bounds		= nullptr;
+	frames		= nullptr;
 
 	LoadMD5Anim(filename);
 }

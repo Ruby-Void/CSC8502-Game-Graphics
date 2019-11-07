@@ -6,9 +6,7 @@ Renderer::Renderer(Window& parent) : OGLRenderer(parent) {
 	currentShader = new Shader(SHADERDIR"PerPixelVertex.glsl", SHADERDIR"PerPixelFragment.glsl");
 	heightMap->SetTexture(SOIL_load_OGL_texture(TEXTUREDIR"Barren Reds.JPG", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_MIPMAPS));
 
-	if (!currentShader->LinkProgram() || !heightMap->GetTexture()) {
-		return;
-	}
+	if (!currentShader->LinkProgram() || !heightMap->GetTexture()) { return; }
 
 	SetTextureRepeating(heightMap->GetTexture(), true);	light = new Light(Vector3((RAW_HEIGHT * HEIGHTMAP_X / 2.0f), 500.0f, (RAW_HEIGHT * HEIGHTMAP_Z / 2.0f)), Vector4(1, 1, 1, 1), (RAW_WIDTH * HEIGHTMAP_X) / 2.0f);
 	projMatrix = Matrix4::Perspective(1.0f, 15000.0f, (float)width / (float)height, 45.0f);

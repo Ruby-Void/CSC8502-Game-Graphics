@@ -18,8 +18,8 @@ bool Frustum::InsideFrustum(SceneNode& n) {
 	for (int p = 0; p < 6; ++p) {
 		if (!planes[p].SphereInPlane(n.GetWorldTransform().
 			GetPositionVector(), n.GetBoundingRadius())) {
-			return false; // scenenode is outside this plane !
+			return false;
 		}
 	}
-	return true; // Scenenode is inside every plane ...
+	return true;
 }

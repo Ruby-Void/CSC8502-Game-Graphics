@@ -4,12 +4,12 @@
 
 Window* Window::window;
 
-Keyboard*Window::keyboard	= NULL;
-Mouse*Window::mouse			= NULL;
-//GameTimer*Window::timer		= NULL;
+Keyboard*Window::keyboard	= nullptr;
+Mouse*Window::mouse			= nullptr;
+//GameTimer*Window::timer		= nullptr;
 
 Window::Window(std::string title, int sizeX, int sizeY, bool fullScreen)	{
-	renderer		= NULL;
+	renderer		= nullptr;
 	window			= this;
 	forceQuit		= false;
 	init			= false;
@@ -24,7 +24,7 @@ Window::Window(std::string title, int sizeX, int sizeY, bool fullScreen)	{
 	fullScreen ? position.x = 0.0f : position.x = 100.0f;
 	fullScreen ? position.y = 0.0f : position.y = 100.0f;
 
-	HINSTANCE hInstance = GetModuleHandle( NULL );
+	HINSTANCE hInstance = GetModuleHandle( nullptr );
 
 	WNDCLASSEX windowClass;
 	ZeroMemory(&windowClass, sizeof(WNDCLASSEX));
@@ -34,7 +34,7 @@ Window::Window(std::string title, int sizeX, int sizeY, bool fullScreen)	{
 	    windowClass.style		= CS_HREDRAW | CS_VREDRAW;
 		windowClass.lpfnWndProc	= (WNDPROC)WindowProc;
 		windowClass.hInstance	= hInstance;
-		windowClass.hCursor		= LoadCursor(NULL, IDC_ARROW);
+		windowClass.hCursor		= LoadCursor(nullptr, IDC_ARROW);
 		windowClass.hbrBackground = (HBRUSH)COLOR_WINDOW;
 		windowClass.lpszClassName = WINDOWCLASS;
 
@@ -61,7 +61,7 @@ Window::Window(std::string title, int sizeX, int sizeY, bool fullScreen)	{
 		}
 	}
 
-	windowHandle = CreateWindowEx(fullScreen ? WS_EX_TOPMOST : NULL,
+	windowHandle = CreateWindowEx(fullScreen ? WS_EX_TOPMOST : 0,
 	WINDOWCLASS,    // name of the window class
 	title.c_str(),   // title of the window
 	fullScreen ? WS_POPUP|WS_VISIBLE : WS_OVERLAPPEDWINDOW|WS_POPUP|WS_VISIBLE|WS_SYSMENU|WS_MAXIMIZEBOX|WS_MINIMIZEBOX,    // window style
@@ -69,10 +69,10 @@ Window::Window(std::string title, int sizeX, int sizeY, bool fullScreen)	{
                         (int)position.y,	// y-position of the window
                         (int)size.x,		// width of the window
                         (int)size.y,		// height of the window
-                        NULL,				// No parent window!
-                        NULL,				// No Menus!
+                        nullptr,				// No parent window!
+                        nullptr,				// No Menus!
                         hInstance,			// application handle
-                        NULL);				// No multiple windows!
+                        nullptr);				// No multiple windows!
 
  	if(!windowHandle) {
 		std::cout << "Window::Window(): Failed to create window!" << std::endl;
@@ -106,8 +106,8 @@ Window::Window(std::string title, int sizeX, int sizeY, bool fullScreen)	{
 
 Window::~Window(void)
 {
-	delete keyboard;keyboard = NULL;
-	delete mouse;	mouse = NULL;
+	delete keyboard;keyboard = nullptr;
+	delete mouse;	mouse = nullptr;
 }
 
 HWND Window::GetHandle() {
@@ -154,7 +154,7 @@ void Window::CheckMessages(MSG &msg)	{
 		}break;
 		case (WM_INPUT): {
 			UINT dwSize;
-			GetRawInputData((HRAWINPUT)msg.lParam, RID_INPUT, NULL, &dwSize,sizeof(RAWINPUTHEADER));
+			GetRawInputData((HRAWINPUT)msg.lParam, RID_INPUT, nullptr, &dwSize,sizeof(RAWINPUTHEADER));
 
 			BYTE* lpb = new BYTE[dwSize];
 	
@@ -191,7 +191,7 @@ LRESULT CALLBACK Window::WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPAR
 			//int fMinimized	= (BOOL) HIWORD(wParam);
 			if(LOWORD(wParam) == WA_INACTIVE)	{
 				ReleaseCapture();
-				ClipCursor(NULL);
+				ClipCursor(nullptr);
 				mouse->Sleep();
 				keyboard->Sleep();			
 			}
@@ -281,7 +281,7 @@ void	Window::LockMouseToWindow(bool lock)	{
 	}
 	else{
 		ReleaseCapture();
-		ClipCursor(NULL);
+		ClipCursor(nullptr);
 	}
 }
 

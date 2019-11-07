@@ -96,8 +96,8 @@ struct MD5BaseFrame {
 	Vector3*	positions;		//Positions for every base frame joint
 
 	MD5BaseFrame::MD5BaseFrame() {
-		orientations = NULL;
-		positions    = NULL;
+		orientations = nullptr;
+		positions    = nullptr;
 	}
 
 	//Delete our heap memory
@@ -118,7 +118,7 @@ struct MD5Frame {
 	float* components;
 
 	MD5Frame::MD5Frame() {
-		components = NULL;
+		components = nullptr;
 	}
 
 	~MD5Frame() {

@@ -20,8 +20,7 @@ protected:
 	Mesh* triangle;
 	Camera* camera;
 
-	float scale;
-	float rotation;
+	float scale, rotation;
 	Vector3 position;
 };
 

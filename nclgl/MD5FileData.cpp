@@ -613,7 +613,7 @@ void	MD5FileData::UpdateTransformTBO(const MD5Skeleton &skel) const {
 /*
 We keep all of the animations for a particular mesh inside a map, sorted
 by its name - we can search and get an animation using this function, 
-bearing in mind it will return NULL if the specified anim cannot be found.
+bearing in mind it will return nullptr if the specified anim cannot be found.
 */
 MD5Anim*	MD5FileData::GetAnim(const string &name) const {
 	std::map<std::string, MD5Anim*>::const_iterator i = animations.find(name);
@@ -621,7 +621,7 @@ MD5Anim*	MD5FileData::GetAnim(const string &name) const {
 	if(i != animations.end()) {
 		return i->second;
 	}
-	return NULL;
+	return nullptr;
 }
 
 int			MD5FileData::GetIndexForJointName(const string &name) const {

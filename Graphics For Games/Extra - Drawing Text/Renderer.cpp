@@ -57,7 +57,7 @@ Renderer::Renderer(Window &parent) : OGLRenderer(parent)	{
 /*
 Keep it clean!
 */
-Renderer::~Renderer(void)	{
+Renderer::~Renderer(void) {
 	delete camera;
 	delete basicFont;
 }
@@ -65,7 +65,7 @@ Renderer::~Renderer(void)	{
 /*
 Keep it moving!
 */
-void Renderer::UpdateScene(float msec)	{
+void Renderer::UpdateScene(float msec) {
 	camera->UpdateCamera(msec);
 }
 
@@ -107,7 +107,7 @@ void Renderer::DrawText(const std::string &text, const Vector3 &position, const 
 		//(for me anyway...)
 		modelMatrix = Matrix4::Translation(Vector3(position.x,height-position.y, position.z)) * Matrix4::Scale(Vector3(size,size,1));
 		viewMatrix.ToIdentity();
-		projMatrix = Matrix4::Orthographic(-1.0f,1.0f,(float)width, 0.0f,(float)height, 0.0f);
+		projMatrix = Matrix4::Orthographic(-1.0f, 1.0f,(float)width, 0.0f,(float)height, 0.0f);
 	}
 	//Either way, we update the matrices, and draw the mesh
 	UpdateShaderMatrices();

@@ -13,16 +13,15 @@ _-_-_-_-_-_-_-""  ""
 
 */
 
-
 #include "OGLRenderer.h"
 
-DebugDrawData* OGLRenderer::orthoDebugData			= NULL;
-DebugDrawData* OGLRenderer::perspectiveDebugData	= NULL;
-OGLRenderer*   OGLRenderer::debugDrawingRenderer	= NULL;
-Shader*		   OGLRenderer::debugDrawShader			= NULL;
+DebugDrawData* OGLRenderer::orthoDebugData			= nullptr;
+DebugDrawData* OGLRenderer::perspectiveDebugData	= nullptr;
+OGLRenderer*   OGLRenderer::debugDrawingRenderer	= nullptr;
+Shader*		   OGLRenderer::debugDrawShader			= nullptr;
 
-bool		   OGLRenderer::drawnDebugOrtho			= false;
-bool		   OGLRenderer::drawnDebugPerspective	= false;
+bool OGLRenderer::drawnDebugOrtho = false;
+bool OGLRenderer::drawnDebugPerspective = false;
 
 
 /*
@@ -135,13 +134,13 @@ OGLRenderer::OGLRenderer(Window &window)	{
 
 #ifdef OPENGL_DEBUGGING
 	//PFNWGLCREATECONTEXTATTRIBSARBPROC glDebugMessageCallbackTEMP = (PFNWGLCREATECONTEXTATTRIBSARBPROC) wglGetProcAddress("glDebugMessageCallbackARB");
-	glDebugMessageCallbackARB(&OGLRenderer::DebugCallback, NULL);
+	glDebugMessageCallbackARB(&OGLRenderer::DebugCallback, nullptr);
 	glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS_ARB);
 #endif
 
 	glClearColor(0.2f,0.2f,0.2f,1.0f);			//When we clear the screen, we want it to be dark grey
 
-	currentShader = 0;							//0 is the 'null' object name for shader programs...
+	currentShader = 0;							//0 is the 'nullptr' object name for shader programs...
 
 	window.SetRenderer(this);					//Tell our window about the new renderer! (Which will in turn resize the renderer window to fit...)
 

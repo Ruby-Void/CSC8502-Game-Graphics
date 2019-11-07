@@ -2,7 +2,7 @@
 #ifdef USE_MD5MESH
 #ifdef WEEK_2_CODE
 MD5Node::MD5Node(const MD5FileData &ofType) : sourceData(ofType)	{
-	currentAnim		 = NULL;
+	currentAnim		 = nullptr;
 	frameTime		 = 0.0f;
 	currentAnimFrame = 0;
 
@@ -52,10 +52,10 @@ void MD5Node::PlayAnim(std::string name) {
 }
 
 void MD5Node::PlayAnim(std::string name, unsigned int frame)	{
-// We want to reset all of the animation details
-	currentAnimFrame = frame;
+	// We want to reset all of the animation details	
 	frameTime = 0.0f;
 	currentAnim = sourceData.GetAnim(name);
+	currentAnimFrame = (currentAnim->GetNumFrames() > frame) ? frame : 0;
 }
 
 void	MD5Node::Draw(const OGLRenderer &r) {
@@ -199,7 +199,7 @@ void MD5Node::ApplyTransformsToHierarchy(int startingNode) {
 	for (int i = startingNode; i < currentSkeleton.numJoints; ++i) {
 		MD5Joint &j = currentSkeleton.joints[i];
 
-		MD5Joint*p = NULL;
+		MD5Joint*p = nullptr;
 		
 		if (j.parent >= 0) {
 			p = &currentSkeleton.joints[j.parent];

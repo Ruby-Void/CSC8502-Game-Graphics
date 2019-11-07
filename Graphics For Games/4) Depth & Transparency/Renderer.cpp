@@ -3,22 +3,15 @@
 Renderer::Renderer(Window& parent) : OGLRenderer(parent) {
 	meshes[0] = Mesh::GenerateQuad();
 	meshes[1] = Mesh::GenerateTriangle();
-
 	meshes[0]->SetTexture(SOIL_load_OGL_texture(TEXTUREDIR"brick.tga", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0));
 	meshes[1]-> SetTexture(SOIL_load_OGL_texture(TEXTUREDIR"stainedglass.tga", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0));
-
-	if (!textures[0] || !textures[1]) {
-		return;
-	}
+	if (!textures[0] || !textures[1]) { return; }
 
 	positions[0] = Vector3(0, 0, -5);
 	positions[1] = Vector3(0, 0, -5);
 
 	currentShader = new Shader(SHADERDIR"TexturedVertex.glsl", SHADERDIR"TexturedFragment.glsl");
-
-	if (!currentShader-> LinkProgram()) {
-		return;
-	}
+	if (!currentShader->LinkProgram()) { return; }
 
 	blendMode = 0;
 	usingDepth = usingAlpha = false;

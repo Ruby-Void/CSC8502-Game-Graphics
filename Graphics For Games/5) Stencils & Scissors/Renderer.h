@@ -8,8 +8,8 @@ public:
 
 	virtual void RenderScene();
 
-	void ToggleScissor();
-	void ToggleStencil();
+	void ToggleScissor() { usingScissor = !usingScissor; }
+	void ToggleStencil() { usingStencil = !usingStencil; }
 
 protected:
 	Mesh* triangle, * quad;

@@ -2,9 +2,7 @@
 
 HeightMap::HeightMap(std::string name) {
 	std::ifstream file(name.c_str(), ios::binary);
-	if (!file) {
-		return;
-	}
+	if (!file) { return; }
 
 	numVertices = RAW_WIDTH * RAW_HEIGHT;
 	numIndices = (RAW_WIDTH - 1) * (RAW_HEIGHT - 1) * 6;

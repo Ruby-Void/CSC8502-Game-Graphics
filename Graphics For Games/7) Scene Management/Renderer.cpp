@@ -12,8 +12,7 @@ Renderer::Renderer(Window& parent) : OGLRenderer(parent) {
 	quad = Mesh::GenerateQuad();
 	quad->SetTexture(SOIL_load_OGL_texture(TEXTUREDIR"stainedglass.tga", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0));
 
-	if (!currentShader-> LinkProgram() || !quad->GetTexture()) {
-		return;	}	root = new SceneNode();
+	if (!currentShader-> LinkProgram() || !quad->GetTexture()) { return; }	root = new SceneNode();
 
 	for (int i = 0; i < 5; ++i) {
 		SceneNode* s = new SceneNode();
@@ -25,9 +24,10 @@ Renderer::Renderer(Window& parent) : OGLRenderer(parent) {
 		root-> AddChild(s);
 	}
 
-	root->AddChild(new CubeRobot());	glEnable(GL_DEPTH_TEST);
+	root->AddChild(new CubeRobot());	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 	init = true;}Renderer::~Renderer(void) {
 	delete root;	delete quad;	delete camera;	CubeRobot::DeleteCube();}void Renderer::UpdateScene(float msec) {
 	camera->UpdateCamera(msec);
@@ -90,4 +90,4 @@ void Renderer::DrawNode(SceneNode* n) {
 		glUniformMatrix4fv(glGetUniformLocation(currentShader->GetProgram(), "modelMatrix"), 1, false, (float*)& (n->GetWorldTransform()* Matrix4::Scale(n->GetModelScale())));
 		glUniform4fv(glGetUniformLocation(currentShader->GetProgram(), "nodeColour"), 1, (float*)&n->GetColour());
 		glUniform1i(glGetUniformLocation(currentShader->GetProgram(), "useTexture"), (int)n->GetMesh()->GetTexture());
-		n->Draw(*this);	}}
+		n->Draw();	}}

@@ -35,7 +35,7 @@ GLuint Shader::GenerateShader(string from, GLenum type) {
 	GLuint shader = glCreateShader(type);
 
 	const char* chars = load.c_str();
-	glShaderSource(shader, 1, &chars, NULL);
+	glShaderSource(shader, 1, &chars, nullptr);
 	glCompileShader(shader);
 
 	GLint status;
@@ -44,7 +44,7 @@ GLuint Shader::GenerateShader(string from, GLenum type) {
 	if (status == GL_FALSE) {
 		cout << "Compiling failed!" << endl;
 		char error[512];
-		glGetInfoLogARB(shader, sizeof(error), NULL, error);
+		glGetInfoLogARB(shader, sizeof(error), nullptr, error);
 		cout << error;
 		loadFailed = true;
 		return 0;
@@ -89,7 +89,6 @@ bool Shader::LinkProgram() {
 		return false;
 	}
 	glLinkProgram(program);
-
 	GLint code;
 	glGetProgramiv(program, GL_LINK_STATUS, &code);
 	return (code == GL_TRUE) ? true : false;

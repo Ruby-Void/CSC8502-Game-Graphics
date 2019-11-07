@@ -1,11 +1,7 @@
 ﻿  Renderer.cpp
   tutorial3.cpp
-H:\C++\Coursework\CSC8502-Game-Graphics\Graphics For Games\3) Texturing\tutorial3.cpp(21,32): error C2039: 'UpdateTextureMatrix': is not a member of 'Renderer'
-H:\C++\Coursework\CSC8502-Game-Graphics\Graphics For Games\3) Texturing\Renderer.h(4): message : see declaration of 'Renderer'
-H:\C++\Coursework\CSC8502-Game-Graphics\Graphics For Games\3) Texturing\tutorial3.cpp(26,32): error C2039: 'UpdateTextureMatrix': is not a member of 'Renderer'
-H:\C++\Coursework\CSC8502-Game-Graphics\Graphics For Games\3) Texturing\Renderer.h(4): message : see declaration of 'Renderer'
-H:\C++\Coursework\CSC8502-Game-Graphics\Graphics For Games\3) Texturing\tutorial3.cpp(30,28): error C2039: 'ToggleFiltering': is not a member of 'Renderer'
-H:\C++\Coursework\CSC8502-Game-Graphics\Graphics For Games\3) Texturing\Renderer.h(4): message : see declaration of 'Renderer'
-H:\C++\Coursework\CSC8502-Game-Graphics\Graphics For Games\3) Texturing\tutorial3.cpp(34,28): error C2039: 'ToggleRepeating': is not a member of 'Renderer'
   Generating Code...
-H:\C++\Coursework\CSC8502-Game-Graphics\Graphics For Games\3) Texturing\Renderer.h(4): message : see declaration of 'Renderer'
+LINK : warning LNK4286: symbol '___glewGetUniformLocation' defined in 'glew32.lib(glew.obj)' is imported by 'Renderer.obj'
+LINK : warning LNK4286: symbol '___glewUniform1i' defined in 'glew32.lib(glew.obj)' is imported by 'Renderer.obj'
+LINK : warning LNK4286: symbol '___glewUseProgram' defined in 'glew32.lib(glew.obj)' is imported by 'Renderer.obj'
+  Tutorial3.vcxproj -> C:\Users\b9059529\Documents\C++\Coursework\CSC8502-Game-Graphics\Graphics For Games\Debug\Tutorial 03 - Texturing.exe

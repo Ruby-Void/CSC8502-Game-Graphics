@@ -1,1 +1,12 @@
-﻿  Tutorial5.vcxproj -> H:\C++\Coursework\CSC8502-Game-Graphics\Graphics For Games\Debug\Tutorial 05 - Scissors and Stencils.exe
+﻿  Renderer.cpp
+C:\Users\b9059529\Documents\C++\Coursework\CSC8502-Game-Graphics\Graphics For Games\5) Stencils & Scissors\Renderer.cpp(29,91): warning C4244: 'argument': conversion from 'float' to 'GLsizei', possible loss of data
+C:\Users\b9059529\Documents\C++\Coursework\CSC8502-Game-Graphics\Graphics For Games\5) Stencils & Scissors\Renderer.cpp(29,69): warning C4244: 'argument': conversion from 'float' to 'GLsizei', possible loss of data
+C:\Users\b9059529\Documents\C++\Coursework\CSC8502-Game-Graphics\Graphics For Games\5) Stencils & Scissors\Renderer.cpp(29,48): warning C4244: 'argument': conversion from 'float' to 'GLint', possible loss of data
+  tutorial5.cpp
+  Generating Code...
+C:\Users\b9059529\Documents\C++\Coursework\CSC8502-Game-Graphics\Graphics For Games\5) Stencils & Scissors\Renderer.cpp(29,26): warning C4244: 'argument': conversion from 'float' to 'GLint', possible loss of data
+LINK : warning LNK4286: symbol '___glewGetUniformLocation' defined in 'glew32.lib(glew.obj)' is imported by 'Renderer.obj'
+LINK : warning LNK4286: symbol '___glewUniform1i' defined in 'glew32.lib(glew.obj)' is imported by 'Renderer.obj'
+LINK : warning LNK4286: symbol '___glewUseProgram' defined in 'glew32.lib(glew.obj)' is imported by 'Renderer.obj'
+glew32.lib(glew.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'glew32.lib(glew.obj)' or at 'C:\Users\b9059529\Documents\C++\Coursework\CSC8502-Game-Graphics\Graphics For Games\Debug\vc120.pdb'; linking object as if no debug info
+  Tutorial5.vcxproj -> C:\Users\b9059529\Documents\C++\Coursework\CSC8502-Game-Graphics\Graphics For Games\Debug\Tutorial 05 - Scissors and Stencils.exe

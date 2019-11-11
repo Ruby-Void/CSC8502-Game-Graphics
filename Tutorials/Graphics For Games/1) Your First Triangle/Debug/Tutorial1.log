@@ -1,0 +1,5 @@
+﻿  Renderer.cpp
+  tutorial1.cpp
+  Generating Code...
+LINK : warning LNK4286: symbol '___glewUseProgram' defined in 'glew32.lib(glew.obj)' is imported by 'Renderer.obj'
+  Tutorial1.vcxproj -> C:\Users\b9059529\Documents\C++\Coursework\CSC8502-Game-Graphics\Graphics For Games\Debug\Tutorial 01 - Your First Triangle.exe

@@ -9,13 +9,15 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Tutorial7.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="CubeRobot.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Renderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Tutorial7.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CubeRobot.h">

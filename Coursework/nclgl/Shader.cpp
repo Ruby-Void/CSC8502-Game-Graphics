@@ -91,22 +91,5 @@ bool Shader::LinkProgram() {
 	glLinkProgram(program);
 	GLint code;
 	glGetProgramiv(program, GL_LINK_STATUS, &code);
-	if (code == GL_FALSE)
-	{
-		GLint maxLength = 0;
-		glGetProgramiv(program, GL_INFO_LOG_LENGTH, &maxLength);
-
-
-
-		// The maxLength includes the NULL character
-		std::vector<GLchar> infoLog(maxLength);
-		glGetProgramInfoLog(program, maxLength, &maxLength, &infoLog[0]);
-
-
-
-		for (auto x : infoLog)
-			std::cout << x;
-		return false;
-	}
 	return (code == GL_TRUE) ? true : false;
 }

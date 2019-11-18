@@ -9,7 +9,7 @@ Renderer::Renderer(Window& parent) : OGLRenderer(parent), waterRotate(0.0f) {
 	
 	light = new Light(Vector3((RAW_HEIGHT * HEIGHTMAP_X / 2.0f), 500.0f, (RAW_HEIGHT * HEIGHTMAP_Z / 2.0f)), Vector4(0.9f, 0.9f, 1.0f, 1), (RAW_WIDTH * HEIGHTMAP_X) / 2.0f);
 	reflectShader = new Shader(SHADERDIR"PerPixelVertex.glsl", SHADERDIR"ReflectFragment.glsl");
-	skyboxShader = new Shader(SHADERDIR"SkyboxVertex.glsl", SHADERDIR"SkyboxFragment.glsl");
+	skyboxShader = new Shader(SHADERDIR"SkyboxShaders/SkyboxVertex.glsl", SHADERDIR"SkyboxShaders/SkyboxFragment.glsl");
 	lightShader = new Shader(SHADERDIR"PerPixelVertex.glsl", SHADERDIR"PerPixelFragment.glsl");
 
 	if (!reflectShader->LinkProgram() || !lightShader->LinkProgram() || !skyboxShader->LinkProgram()) { return; }
@@ -18,9 +18,9 @@ Renderer::Renderer(Window& parent) : OGLRenderer(parent), waterRotate(0.0f) {
 	heightMap->SetTexture(SOIL_load_OGL_texture(TEXTUREDIR"Barren Reds.JPG", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_MIPMAPS));
 	heightMap->SetBumpMap(SOIL_load_OGL_texture(TEXTUREDIR"Barren RedsDOT3.JPG", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_MIPMAPS));
 
-	cubeMap = SOIL_load_OGL_cubemap(TEXTUREDIR"rusted_west.jpg", TEXTUREDIR"rusted_east.jpg",
-									TEXTUREDIR"rusted_up.jpg", TEXTUREDIR"rusted_down.jpg",
-									TEXTUREDIR"rusted_south.jpg", TEXTUREDIR"rusted_north.jpg",
+	cubeMap = SOIL_load_OGL_cubemap(TEXTUREDIR"Skybox/orbital-element_ft.tga", TEXTUREDIR"Skybox/orbital-element_bk.tga",
+		TEXTUREDIR"Skybox/orbital-element_up.tga", TEXTUREDIR"Skybox/orbital-element_dn.tga",
+		TEXTUREDIR"Skybox/orbital-element_rt.tga", TEXTUREDIR"Skybox/orbital-element_lf.tga",
 									SOIL_LOAD_RGB, SOIL_CREATE_NEW_ID, 0);
 
 	if (!cubeMap || !quad->GetTexture() || !heightMap->GetTexture() || !heightMap->GetBumpMap()) { return; }

@@ -3,11 +3,12 @@
 #include "Vector3.h"
 #include "Vector4.h"
 #include "Mesh.h"
+#include "Shader.h"
 #include <vector>
 
 class SceneNode {
 public:
-	SceneNode(Mesh* m = nullptr, Vector4 colour = Vector4(1, 1, 1, 1));
+	SceneNode(Mesh* m = nullptr, Shader* shader = new Shader(SHADERDIR"DebugShaders/DebugVertex.glsl", SHADERDIR"DebugShaders/DebugFragment.glsl"));
 	~SceneNode(void);
 
 	float GetBoundingRadius() const { return boundingRadius; }
@@ -28,6 +29,9 @@ public:
 	Mesh* GetMesh() const { return mesh; }
 	void SetMesh(Mesh* m) { mesh = m; }
 
+	Shader* GetShader() const { return shader; }
+	void SetShader(Shader* s) { shader = s; }
+
 	Matrix4 GetWorldTransform() const { return worldTransform; }
 
 	static bool CompareByCameraDistance(SceneNode* a, SceneNode* b);
@@ -41,6 +45,7 @@ protected:
 	float distanceFromCamera, boundingRadius;
 	SceneNode* parent;
 	Mesh* mesh;
+	Shader* shader;
 	Matrix4 worldTransform, transform;
 	Vector3 modelScale;
 	Vector4 colour;

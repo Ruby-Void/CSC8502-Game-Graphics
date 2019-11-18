@@ -70,12 +70,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Enviroment.h" />
+    <ClInclude Include="Holder.h" />
     <ClInclude Include="Renderer.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Enviroment.cpp" />
     <ClCompile Include="GraphicsCoursework.cpp" />
+    <ClCompile Include="Holder.cpp" />
     <ClCompile Include="Renderer.cpp" />
   </ItemGroup>
   <ItemGroup>

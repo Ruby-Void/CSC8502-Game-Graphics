@@ -3,7 +3,7 @@
 #include "Renderer.h"
 
 int main() {
-	Window w("Graphics Coursework", 1440, 1050, false);
+	Window w("Graphics Coursework", 1620, 1000, false);
 	if (!w.HasInitialised()) { return -1; }
 
 	Renderer renderer(w);

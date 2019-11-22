@@ -25,22 +25,20 @@ Renderer::Renderer(Window& parent) : OGLRenderer(parent), rotation(0.0f) {
 
 	heightMap = new HeightMap(TEXTUREDIR"terrain.raw");
 	heightMap->SetTexture(SOIL_load_OGL_texture(TEXTUREDIR"Barren Reds.JPG", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_MIPMAPS));
-
 	heightMap->SetBumpMap(SOIL_load_OGL_texture(TEXTUREDIR"Barren RedsDOT3.JPG ", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_MIPMAPS));
-
 	SetTextureRepeating(heightMap->GetTexture(), true);
 	SetTextureRepeating(heightMap->GetBumpMap(), true);
 
 	sphere = new OBJMesh();
 	if (!sphere->LoadOBJMesh(MESHDIR"ico.obj")) { return; }
 
-	sceneShader = new Shader(SHADERDIR"BumpVertex.glsl", SHADERDIR"BufferFragment.glsl");
+	sceneShader = new Shader(SHADERDIR"BumpShaders/BumpVertex.glsl", SHADERDIR"BufferFragment.glsl");
 	if (!sceneShader->LinkProgram()) { return; }
 
-	combineShader = new Shader(SHADERDIR"CombineVertex.glsl", SHADERDIR"CombineFragment.glsl");
+	combineShader = new Shader(SHADERDIR"CombineShaders/CombineVertex.glsl", SHADERDIR"CombineShaders/CombineFragment.glsl");
 	if (!combineShader->LinkProgram()) { return; }
 
-	pointlightShader = new Shader(SHADERDIR"PointLightVertex.glsl", SHADERDIR"PointLightFragment.glsl");
+	pointlightShader = new Shader(SHADERDIR"PointLightShaders/PointLightVertex.glsl", SHADERDIR"PointLightShaders/PointLightFragment.glsl");
 	if (!pointlightShader->LinkProgram()) { return; }
 
 	glGenFramebuffers(1, &bufferFBO);

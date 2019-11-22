@@ -1,1 +1,4 @@
-﻿  nclgl.vcxproj -> C:\Users\b9059529\Documents\C++\Coursework\CSC8502-Game-Graphics\Coursework\Graphics For Games\Debug\nclgl.lib
+﻿  Camera.cpp
+C:\Users\b9059529\Documents\C++\Coursework\CSC8502-Game-Graphics\Coursework\nclgl\Camera.cpp(66,29): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\Users\b9059529\Documents\C++\Coursework\CSC8502-Game-Graphics\Coursework\nclgl\Camera.cpp(69,29): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
+  nclgl.vcxproj -> C:\Users\b9059529\Documents\C++\Coursework\CSC8502-Game-Graphics\Coursework\Graphics For Games\Debug\nclgl.lib

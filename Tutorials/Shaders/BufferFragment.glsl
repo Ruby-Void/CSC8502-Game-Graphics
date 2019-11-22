@@ -15,8 +15,11 @@ in Vertex{
 out vec4 fragColour[2]; // Our final outputted colours !
 
 void main(void) {
-	mat3 TBN = mat3(IN.tangent, IN.binormal, IN.normal);
+	vec3 BN = normalize(cross(normalize(IN.normal), normalize(IN.tangent)));
+	mat3 TBN = mat3(normalize(IN.tangent), -BN, normalize(IN.normal));
 	vec3 normal = normalize(TBN * (texture2D (bumpTex, IN.texCoord).rgb) * 2.0 - 1.0);
+
+	//normal = normalize(IN.binormal);
 
 	fragColour[0] = texture2D (diffuseTex, IN.texCoord);
 	fragColour[1] = vec4(normal.xyz * 0.5 + 0.5, 1.0);

@@ -1,9 +1,10 @@
 #include "SceneNode.h"
 
-SceneNode::SceneNode(Mesh* m, Vector4 colour) : 
-	mesh(m), colour(colour), boundingRadius(1.0f),
+SceneNode::SceneNode(Mesh* m, Vector4 colour) :
+	colour(colour), boundingRadius(1.0f),
 	distanceFromCamera(0.0f), parent(nullptr),
 	modelScale(Vector3(1, 1, 1)) {
+	mesh = m;	
 }
 
 SceneNode::~SceneNode(void) {

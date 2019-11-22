@@ -70,13 +70,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Enviroment.h" />
+    <ClInclude Include="PointLights.h" />
     <ClInclude Include="Renderer.h" />
+    <ClInclude Include="Skybox.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Enviroment.cpp" />
     <ClCompile Include="GraphicsCoursework.cpp" />
+    <ClCompile Include="PointLights.cpp" />
     <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="Skybox.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\nclgl\nclgl.vcxproj">

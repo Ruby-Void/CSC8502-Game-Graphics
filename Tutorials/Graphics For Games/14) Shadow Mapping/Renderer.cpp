@@ -5,15 +5,16 @@ Renderer::Renderer(Window& parent) : OGLRenderer(parent) {
 	light = new Light(Vector3(-450.0f, 200.0f, 280.0f), Vector4(1, 1, 1, 1), 5500.0f);
 	hellData = new MD5FileData(MESHDIR"hellknight.md5mesh");
 	hellNode = new MD5Node(*hellData);
-	//hellData->AddAnim(MESHDIR"idle2.md5anim");
-	//hellNode->PlayAnim(MESHDIR"idle2.md5anim");
-	sceneShader = new Shader(SHADERDIR"shadowSceneVertex.glsl", SHADERDIR"shadowSceneFragment.glsl");
-	shadowShader = new Shader(SHADERDIR"shadowVertex.glsl", SHADERDIR"shadowFragment.glsl");
+	hellData->AddAnim(MESHDIR"idle2.md5anim");
+	hellNode->PlayAnim(MESHDIR"idle2.md5anim");
+	sceneShader = new Shader(SHADERDIR"ShadowShaders/shadowSceneVertex.glsl", SHADERDIR"ShadowShaders/shadowSceneFragment.glsl");
+	shadowShader = new Shader(SHADERDIR"ShadowShaders/shadowVertex.glsl", SHADERDIR"ShadowShaders/shadowFragment.glsl");
 
 	if (!sceneShader->LinkProgram() || !shadowShader->LinkProgram()) { return; }
 
 	glGenTextures(1, &shadowTex);
 	glBindTexture(GL_TEXTURE_2D, shadowTex);
+
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -72,14 +73,15 @@ void Renderer::RenderScene() {
 void Renderer::DrawShadowScene() {
 	glBindFramebuffer(GL_FRAMEBUFFER, shadowFBO);
 	glClear(GL_DEPTH_BUFFER_BIT);
+
 	glViewport(0, 0, SHADOWSIZE, SHADOWSIZE);
 	glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
 	SetCurrentShader(shadowShader);
+
 	viewMatrix = Matrix4::BuildViewMatrix(light->GetPosition(), Vector3(0, 0, 0));
 	textureMatrix = biasMatrix * (projMatrix * viewMatrix);
 
 	UpdateShaderMatrices();
-
 	DrawFloor();
 	DrawMesh();
 
@@ -114,6 +116,7 @@ void Renderer::DrawCombinedScene() {
 void Renderer::DrawMesh() {
 	modelMatrix.ToIdentity();
 	Matrix4 tempMatrix = textureMatrix * modelMatrix;
+
 	glUniformMatrix4fv(glGetUniformLocation(currentShader->GetProgram(), "textureMatrix"), 1, false, *&tempMatrix.values);
 	glUniformMatrix4fv(glGetUniformLocation(currentShader->GetProgram(), "modelMatrix"), 1, false, *&modelMatrix.values);
 	hellNode->Draw(*this);

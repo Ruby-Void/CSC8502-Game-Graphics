@@ -18,8 +18,8 @@ protected:
 	GLuint cubeMap;
 	Shader* lightShader, * reflectShader, * skyboxShader;
 	HeightMap* heightMap;
-	Mesh* quad; // Water
-	Light* light; // Scene Light
+	Mesh* quad;
+	Light* light;
 	Camera* camera;
 
 	void DrawHeightmap();

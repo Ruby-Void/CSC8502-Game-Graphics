@@ -9,12 +9,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="tutorial8.cpp">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
     <ClCompile Include="Renderer.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
+    <ClCompile Include="tutorial8.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Renderer.h">

@@ -35,6 +35,8 @@ public:
 	void SetRoll(float r) { roll = r; }
 
 protected:
+	bool freeCamera = true, inverse = false;
 	float yaw, pitch, roll;
 	Vector3 position;
+	Vector3 centrePoint;
 };

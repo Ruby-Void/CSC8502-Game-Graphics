@@ -19,9 +19,9 @@ public:
 
 	GLuint GetTexture() { return texture; }
 	void SetTexture(GLuint tex) { texture = tex; }
-
-	void SetBumpMap(GLuint tex) { bumpTexture = tex; }
+	
 	GLuint GetBumpMap() { return bumpTexture; }
+	void SetBumpMap(GLuint tex) { bumpTexture = tex; }
 
 protected:
 	unsigned int* indices;

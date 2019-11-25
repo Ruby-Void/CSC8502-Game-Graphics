@@ -6,7 +6,7 @@ Skybox::Skybox(void) {
 		TEXTUREDIR"Skybox/orbital-element_rt.tga", TEXTUREDIR"Skybox/orbital-element_lf.tga",
 		SOIL_LOAD_RGB, SOIL_CREATE_NEW_ID, 0));
 
-	skyboxShader = new Shader(SHADERDIR"SkyboxShaders/SkyboxVertex.glsl", SHADERDIR"SkyboxShaders/SkyboxFragment.glsl");
+	skyboxShader = new Shader(VERTEXDIR"SkyboxVertex.glsl", FRAGMENTDIR"SkyboxFragment.glsl");
 
 	skyboxInit = (!skyboxCubeMap || !skyboxShader->LinkProgram()) ? false : true;
 }

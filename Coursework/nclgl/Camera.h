@@ -1,9 +1,3 @@
-/*
-The Camera class currently creates view matrix rotations about the X and Y axis.
-Try adding in a roll member variable to the Camera class, which rotates about the Z axis. 
-Does it do what you thought it would? 
-How about when you roll 90 degrees?
-*/
 #pragma once
 #include "Window.h"
 #include "Matrix4.h"
@@ -35,7 +29,7 @@ public:
 	void SetRoll(float r) { roll = r; }
 
 protected:
-	bool freeCamera = true, inverse = false;
+	bool freeCamera = false, inverse = false;
 	float yaw, pitch, roll;
 	Vector3 position;
 	Vector3 centrePoint;

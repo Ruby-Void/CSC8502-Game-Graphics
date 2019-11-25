@@ -145,7 +145,7 @@ OGLRenderer::OGLRenderer(Window &window)	{
 	window.SetRenderer(this);					//Tell our window about the new renderer! (Which will in turn resize the renderer window to fit...)
 
 	if(!debugDrawingRenderer) {
-		debugDrawShader		 = new Shader(SHADERDIR"DebugShaders/DebugVertex.glsl", SHADERDIR"DebugShaders/DebugFragment.glsl");
+		debugDrawShader		 = new Shader(VERTEXDIR"DebugVertex.glsl", FRAGMENTDIR"DebugFragment.glsl");
 		orthoDebugData		 = new DebugDrawData();
 		perspectiveDebugData = new DebugDrawData();
 		debugDrawingRenderer = this;	
@@ -233,7 +233,8 @@ void OGLRenderer::UpdateShaderMatrices()	{
 		glUniformMatrix4fv(glGetUniformLocation(currentShader->GetProgram(), "modelMatrix"),	1,false, (float*)&modelMatrix);
 		glUniformMatrix4fv(glGetUniformLocation(currentShader->GetProgram(), "viewMatrix") ,	1,false, (float*)&viewMatrix);
 		glUniformMatrix4fv(glGetUniformLocation(currentShader->GetProgram(), "projMatrix") ,	1,false, (float*)&projMatrix);
-		glUniformMatrix4fv(glGetUniformLocation(currentShader->GetProgram(), "textureMatrix")  ,1,false, (float*)&textureMatrix);
+		glUniformMatrix4fv(glGetUniformLocation(currentShader->GetProgram(), "textureMatrix"), 1,false, (float*)&textureMatrix);
+		glUniformMatrix4fv(glGetUniformLocation(currentShader->GetProgram(), "shadowMatrix"), 1, false, (float*)&shadowMatrix);		
 	}
 }
 

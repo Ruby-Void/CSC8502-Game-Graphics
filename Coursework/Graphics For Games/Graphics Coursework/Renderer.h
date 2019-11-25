@@ -24,44 +24,39 @@ public:
 
 protected:
 	// Scene Dynamics Variables
-	float waterRotation;	// Water Rotation
-	float lightRotation;	// Light Rotation
+	bool shadowsActive = true, waterActive = true, 
+		pointLightsActive = true, skyboxActive = true,
+		lightMovementActive = true;
+	float waterRotation, lightRotation;
+	Vector3 envIllumPos, centrePos;
 
 	// Scene Variables
-	Camera* camera;					// Camera
-	Mesh* viewport;					// Viewport
-	Mesh* heightMap;				// Terrain
-	Mesh* water;					// Water
-	OBJMesh* sphere;				// Light Sphere
-	Light* envIllum;				// Enviroment Illumination
-	Light* waterIllum;				// Water Light
-	Shader* sceneShader;			// Scene Shader	
-	Shader* shadowShader;			// Shadow Shader
-	Shader* combineShadowShader;	// Shadow Scene Shader
-	Shader* waterShader;			// Water Shader
-	Shader* combinedShader;			// Combined Buffers Shader
+	Camera* camera;		// Camera
+	Mesh* viewport;		// Viewport
+	Mesh* heightMap;	// Terrain
+	Mesh* cube;			// Cube
+	Mesh* water;		// Water
+	OBJMesh* sphere;	// Light Sphere
+	Light* envIllum;	// Enviroment Illumination
+
+	// Shaders
+	Shader* sceneShader, * sceneShadowShader, * shadowShader, * waterShader, * combinedShader;
 
 	// Frame Buffers
-	GLuint envFBO;			// Enviroment Frame Buffer	
-	GLuint shadowFBO;		// Shadow Frame Buffer
-	GLuint skyboxFBO;		// Skybox Frame Buffer
-	GLuint pointLightFBO;	// Point Lights Frame Buffer
-	GLuint testFBO;			// Test Frame Buffer
+	GLuint envFBO, shadowFBO, skyboxFBO, pointLightFBO;
 
 	// Screen Textures
-	GLuint envColourST;		// Enviroment Colour Screen Texture
-	GLuint envNormalST;		// Enviroment Normal Screen Texture
-	GLuint envDepthST;		// Enviroment Depth Screen Texture
-	GLuint shadowST;		// Shadow Screen Texture
-	GLuint skyboxST;		// Skybox Screen Texture
-	GLuint emissiveST;		// Light Emissive Screen Texture
-	GLuint specularST;		// Light Specular Screen Texture
-	GLuint testST;			// Test Screen Texture
+	GLuint envColourST, envNormalST, envDepthST, 
+		   shadowST, skyboxST, emissiveST, specularST;
+
+	// Buffer Clearing
+	void ClearAllBuffers();
 
 	// Creation
 	Skybox* skybox;				// Skybox Creation
 	PointLights* pointLights;	// Point Light Creation
 	bool createHeightMap();		// Terrain creation
+	bool createCube();			// Cube creation
 	bool createWater();			// Water Creation
 	bool createSphere();		// Light Sphere Creation
 	bool createShaders();		// Shaders Creation
@@ -72,8 +67,15 @@ protected:
 	void bindSkyboxBuffer();		// Bind Skybox to Skybox Buffer
 	void bindPointLightsBuffer();	// Bind Point Lights to Point Light Buffer
 	void bindShadowBuffer();		// Bind shadows to Shadow Buffer
-	void combineShadowBuffer();
-	void combineBuffers();			// Combine All Bound Buffers
+
+
+	// Display Different Scenes	
+	void displayShadow() { shadowsActive = !shadowsActive; }	
+	void displayWater() { waterActive = !waterActive; }
+	void displayPointLights() { pointLightsActive = !pointLightsActive; }
+	void displaySkybox() { skyboxActive = !skyboxActive; }
+	void displayLightMovement() { lightMovementActive = !lightMovementActive; }
+	void combineBuffers();
 
 	// Scene Node
 	SceneNode* root = nullptr;			// Scene Node Root

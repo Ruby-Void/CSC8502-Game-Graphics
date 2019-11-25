@@ -49,7 +49,8 @@ static inline double DegToRad(const double rad)	{
 #define max(a,b)    (((a) > (b)) ? (a) : (b))
 #define min(a,b)    (((a) < (b)) ? (a) : (b))
 
-#define SHADERDIR	"../../Shaders/"
-#define MESHDIR		"../../Meshes/"
-#define TEXTUREDIR  "../../Textures/"
-#define SOUNDSDIR	"../../Sounds/"
+#define FRAGMENTDIR		"../../Shaders/Fragment/"
+#define VERTEXDIR		"../../Shaders/Vertex/"
+#define MESHDIR			"../../Meshes/"
+#define TEXTUREDIR		"../../Textures/"
+#define SOUNDSDIR		"../../Sounds/"

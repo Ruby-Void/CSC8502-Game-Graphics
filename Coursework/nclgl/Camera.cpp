@@ -1,15 +1,7 @@
 #include "Camera.h"
 #include <iostream>
 
-void Camera::UpdateCamera(float msec) {
-	if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_F)) {
-		freeCamera = !freeCamera;
-		if (!freeCamera) {
-			yaw = 180.0f;
-			pitch = -30.0f;
-			position = Vector3(2060.0f, 1000.0f, -500.0f);
-		}		
-	}
+void Camera::UpdateCamera(float msec) {			
 	if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_I)) {
 		inverse = !inverse;
 	}

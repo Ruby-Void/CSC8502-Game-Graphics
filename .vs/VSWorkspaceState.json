@@ -5,9 +5,9 @@
     "\\Coursework\\Graphics For Games",
     "\\Coursework\\Graphics For Games\\Graphics Coursework",
     "\\Coursework\\Shaders",
-    "\\Coursework\\Shaders\\CombineShaders",
-    "\\Coursework\\Shaders\\ShadowShaders"
+    "\\Coursework\\Shaders\\Fragment",
+    "\\Coursework\\Shaders\\Vertex"
   ],
-  "SelectedNode": "\\Coursework\\Shaders\\CombineShaders\\AdvanceCombineFragment.glsl",
+  "SelectedNode": "\\Coursework\\Graphics For Games\\Graphics Coursework\\Renderer.cpp",
   "PreviewInSolutionExplorer": false
 }

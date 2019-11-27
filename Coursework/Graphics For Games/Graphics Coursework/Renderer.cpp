@@ -3,41 +3,37 @@
 Renderer::Renderer(Window& parent) : OGLRenderer(parent), waterRotation(0.0f), lightRotation(0.0f) {
 	skybox = new Skybox();
 	pointLights = new PointLights(LIGHTNUM, RAW_WIDTH, RAW_HEIGHT, HEIGHTMAP_X, HEIGHTMAP_Z);
-	if (!skybox->getSkyboxInit() || !pointLights->getPointLightsInit() || createHeightMap() || createCube() ||
-		createWater() || createSphere() || createShaders() || createFBOs()) {
+	if (!skybox->getSkyboxInit() || !pointLights->getPointLightsInit() || createObjectTextures() || 
+		createHeightMap() || createCube() || createWater() || 
+		createSphere() || createShaders() || createFBOs()) {
 		return;
 	}
 	
 	camera = new Camera(-30.0f, 180.0f, 0.0f, Vector3(2060.0f, 1000.0f, -500.0f));
 	viewport = Mesh::GenerateQuad();	
-	centrePos = Vector3(257.0f * 16.0f / 2.0f, 1000.0f, 257.0f * 16.0f / 2.0f);
-	envIllumPos = Vector3(-5000.0f, 1500.0f, -5000.0f);
+	centrePos = Vector3((RAW_WIDTH * HEIGHTMAP_X) / 2.0f, 400.0f, (RAW_HEIGHT * HEIGHTMAP_Z) / 2.0f);
+	envIllumPos = Vector3(-(RAW_WIDTH * HEIGHTMAP_X) / 2.5f, 2000.0f, (RAW_HEIGHT * HEIGHTMAP_Z) / 2.5f);
 	envIllum = new Light(envIllumPos, Vector4(0.9f, 0.9f, 1.0f, 1), 100000.0f);
 	
 	root = new SceneNode();
 
 	SceneNode* terrain = new SceneNode(heightMap);
-	SceneNode* cubeOne = new SceneNode(cube);
-	cubeOne->SetModelScale(Vector3(100.0f, 100.0f, 100.0f));
-	cubeOne->SetTransform(Matrix4::Translation(Vector3(200, 300, 750)));
-	terrain->AddChild(cubeOne);
 
-	/*SceneNode* cubeTwo = new SceneNode(cube, Vector4(0, 1, 0, 1));
-	cubeTwo->SetModelScale(Vector3(100.0f, 100.0f, 100.0f));
-	cubeTwo->SetTransform(Matrix4::Translation(Vector3(1050, 300, 1400)));
+	SceneNode* cubeOne = new SceneNode(cube);
+	cubeOne->SetModelScale(Vector3(2.5f, 2.5f, 2.5f));
+	cubeOne->SetTransform(Matrix4::Translation(Vector3(200.0f, 325.0f, 750.0f)));
+	terrain->AddChild(cubeOne);
+	
+	SceneNode* cubeTwo = new SceneNode(cube);
+	cubeTwo->SetModelScale(Vector3(2.5f, 2.5f, 2.5f));
+	cubeTwo->SetTransform(Matrix4::Translation(Vector3(1050.0f, 325.0f, 1400.0f)));
 	terrain->AddChild(cubeTwo);
 
-	SceneNode* cubeThree = new SceneNode(cube, Vector4(0, 1, 0, 1));
-	cubeThree->SetModelScale(Vector3(100.0f, 100.0f, 100.0f));
-	cubeThree->SetTransform(Matrix4::Translation(Vector3(2400, 300, 1750)));
-	terrain->AddChild(cubeThree);*/
-
-	/*SceneNode* cubeFour = new SceneNode(cube);
-	cubeFour->SetModelScale(Vector3(100.0f, 100.0f, 100.0f));
-	cubeFour->SetTransform(Matrix4::Translation(Vector3(1200, 240, 2750)));
-	terrain->AddChild(cubeFour);*/
-
-
+	SceneNode* cubeThree = new SceneNode(cube);
+	cubeThree->SetModelScale(Vector3(3.5f, 3.5f, 3.5f));
+	cubeThree->SetTransform(Matrix4::Translation(Vector3(2400.0f, 325.0f, 1750.0f)));
+	terrain->AddChild(cubeThree);
+	
 	root->AddChild(terrain);	
 
 	glEnable(GL_DEPTH_TEST);
@@ -58,7 +54,8 @@ Renderer::~Renderer(void) {
 	delete sceneShadowShader;	
 	delete shadowShader;		
 	delete waterShader;			
-	delete combinedShader;		
+	delete combinedShader;	
+	delete fxaaShader;
 	delete skybox;				
 	delete pointLights;			
 	delete root;				
@@ -70,11 +67,13 @@ Renderer::~Renderer(void) {
 	glDeleteTextures(1, &skyboxST);
 	glDeleteTextures(1, &emissiveST);
 	glDeleteTextures(1, &specularST);
+	glDeleteTextures(1, &combineST);
 
 	glDeleteFramebuffers(1, &envFBO);
 	glDeleteFramebuffers(1, &shadowFBO);
 	glDeleteFramebuffers(1, &skyboxFBO);
 	glDeleteFramebuffers(1, &pointLightFBO);
+	glDeleteFramebuffers(1, &combinedFBO);
 
 	currentShader = nullptr;
 }
@@ -88,45 +87,74 @@ void Renderer::RenderScene() {
 	if (skyboxActive) bindSkyboxBuffer();	
 	bindEnvBuffer();	
 	if (pointLightsActive) bindPointLightsBuffer();	
-	combineBuffers();
+	bindCombineBuffer();
+	fxaaProcess();
 	SwapBuffers();
 	clearNL();
 }
 
 void Renderer::UpdateScene(float msec) {	
-	camera->UpdateCamera(msec);
-	viewMatrix = camera->BuildViewMatrix();
-	root->Update(msec);	
-	waterRotation += msec / 2000.0f;
-	lightRotation = msec * 0.01f;
-
-	envIllum->SetPosition(lightMovementActive ? Matrix4::Rotation(-0.15f, Vector3(0, 1, 0)) * (envIllum->GetPosition() - centrePos) + centrePos : envIllumPos);
-
+	if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_F)) { 
+		camera->SetFreeCamera(!camera->GetFreeCamera());
+		if (!camera->GetFreeCamera()) {			
+			camera->SetYaw(180.0f);
+			camera->SetPitch(-30.0f);
+			camera->SetPosition(Vector3(2060.0f, 1000.0f, -500.0f));
+		}		
+	}
 	if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_1)) { displayShadow(); }
 	if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_2)) { displayWater(); }
 	if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_3)) { displayPointLights(); }
 	if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_4)) { displaySkybox(); }
 	if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_5)) { displayLightMovement(); }
+	if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_6)) { 
+		lightMovementActive = false;
+		camera->SetFreeCamera(true);
+		camera->SetPosition(envIllum->GetPosition()); 
+	}
+
+	camera->UpdateCamera(msec);
+	viewMatrix = camera->BuildViewMatrix();
+	root->Update(msec);
+	waterRotation += msec / 2000.0f;
+	lightRotation = msec * 0.01f;
+	envIllum->SetPosition(lightMovementActive ? Matrix4::Rotation(-0.15f, Vector3(0.0f, 1.0f, 0.0f)) * 
+						 (envIllum->GetPosition() - centrePos) + centrePos : envIllum->GetPosition());
 }
 
 void Renderer::ClearAllBuffers() {
 	glBindFramebuffer(GL_FRAMEBUFFER, envFBO);
-	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+
 	glBindFramebuffer(GL_FRAMEBUFFER, shadowFBO);
-	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+
 	glBindFramebuffer(GL_FRAMEBUFFER, skyboxFBO);	
-	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+
 	glBindFramebuffer(GL_FRAMEBUFFER, pointLightFBO);
-	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+
+	glBindFramebuffer(GL_FRAMEBUFFER, combinedFBO);
+	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+	
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+}
+
+bool Renderer::createObjectTextures() {
+	terrainTexture[0] = SOIL_load_OGL_texture(TEXTUREDIR"Barren Reds.JPG", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_MIPMAPS);
+	terrainTexture[1] = SOIL_load_OGL_texture(TEXTUREDIR"Barren RedsDOT3.JPG ", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_MIPMAPS);
+	cubeTexture[0] = SOIL_load_OGL_texture(TEXTUREDIR"brick.tga", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_MIPMAPS);
+	cubeTexture[1] = SOIL_load_OGL_texture(TEXTUREDIR"brickDOT3.tga", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_MIPMAPS);
+	return false;
 }
 
 // Creation
 bool Renderer::createHeightMap() {
 	heightMap = new HeightMap(TEXTUREDIR"terrain.raw");
-	heightMap->SetTexture(SOIL_load_OGL_texture(TEXTUREDIR"Barren Reds.JPG", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_MIPMAPS));
-	heightMap->SetBumpMap(SOIL_load_OGL_texture(TEXTUREDIR"Barren RedsDOT3.JPG ", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_MIPMAPS));
+	heightMap->SetTexture(terrainTexture[0]);
+	heightMap->SetBumpMap(terrainTexture[1]);
 	SetTextureRepeating(heightMap->GetTexture(), true);
 	SetTextureRepeating(heightMap->GetBumpMap(), true);
 	return heightMap->GetTexture() && heightMap->GetBumpMap() ? false : true;
@@ -134,10 +162,12 @@ bool Renderer::createHeightMap() {
 
 bool Renderer::createCube() {
 	OBJMesh* m = new OBJMesh();
-	m-> LoadOBJMesh(MESHDIR"cube.obj");
+	m->LoadOBJMesh(MESHDIR"cube.obj");
 	cube = m;
-	cube->SetTexture(SOIL_load_OGL_texture(TEXTUREDIR"Barren Reds.JPG", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_MIPMAPS));
-	cube->SetBumpMap(SOIL_load_OGL_texture(TEXTUREDIR"Barren RedsDOT3.JPG ", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_MIPMAPS));
+	cube->SetTexture(cubeTexture[0]);
+	cube->SetBumpMap(cubeTexture[1]);
+	SetTextureRepeating(cube->GetTexture(), true);
+	SetTextureRepeating(cube->GetBumpMap(), true);
 	return cube ? false : true;
 }
 
@@ -159,8 +189,9 @@ bool Renderer::createShaders() {
 	shadowShader = new Shader(VERTEXDIR"ShadowVertex.glsl", FRAGMENTDIR"ShadowFragment.glsl");
 	waterShader = new Shader(VERTEXDIR"PerPixelVertex.glsl", FRAGMENTDIR"ReflectFragment.glsl");
 	combinedShader = new Shader(VERTEXDIR"CombineVertex.glsl", FRAGMENTDIR"CombineFragment.glsl");
+	fxaaShader = new Shader(VERTEXDIR"FXAA-Vertex.glsl", FRAGMENTDIR"FXAA-Fragment.glsl");
 	return (sceneShader->LinkProgram() && sceneShadowShader->LinkProgram() && shadowShader->LinkProgram() && 
-		waterShader->LinkProgram() && combinedShader->LinkProgram()) ? false : true;
+		waterShader->LinkProgram() && combinedShader->LinkProgram() && fxaaShader->LinkProgram()) ? false : true;
 }
 
 bool Renderer::createFBOs() {
@@ -168,6 +199,7 @@ bool Renderer::createFBOs() {
 	glGenFramebuffers(1, &shadowFBO);
 	glGenFramebuffers(1, &skyboxFBO);
 	glGenFramebuffers(1, &pointLightFBO);
+	glGenFramebuffers(1, &combinedFBO);
 
 	GLenum buffers[2];
 	buffers[0] = GL_COLOR_ATTACHMENT0;
@@ -179,6 +211,7 @@ bool Renderer::createFBOs() {
 	GenerateST(skyboxST);
 	GenerateST(emissiveST);
 	GenerateST(specularST);
+	GenerateST(combineST);
 	GenerateShadowST(shadowST);
 
 	glBindFramebuffer(GL_FRAMEBUFFER, envFBO);
@@ -204,6 +237,11 @@ bool Renderer::createFBOs() {
 	glDrawBuffers(2, buffers);
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) { return true; }
 
+	glBindFramebuffer(GL_FRAMEBUFFER, combinedFBO);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, combineST, 0);
+	glDrawBuffer(GL_COLOR_ATTACHMENT0);
+	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) { return true; }
+
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	return false;
 }
@@ -211,13 +249,12 @@ bool Renderer::createFBOs() {
 // Binding
 void Renderer::bindShadowBuffer() {
 	glBindFramebuffer(GL_FRAMEBUFFER, shadowFBO);
-	glClear(GL_DEPTH_BUFFER_BIT);
 	SetCurrentShader(shadowShader);
 
 	glViewport(0, 0, SHADOWSIZE, SHADOWSIZE);
 	glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
 
-	viewMatrix = Matrix4::BuildViewMatrix(envIllum->GetPosition(), Vector3(-envIllum->GetPosition().x, 0.0f, -envIllum->GetPosition().z));
+	viewMatrix = Matrix4::BuildViewMatrix(envIllum->GetPosition(), centrePos);
 	projMatrix = Matrix4::Perspective(1.0f, 10000.0f, (float)width / (float)height, 45.0f);
 	shadowMatrix = biasMatrix * (projMatrix * viewMatrix);
 
@@ -233,7 +270,6 @@ void Renderer::bindShadowBuffer() {
 
 void Renderer::bindSkyboxBuffer() {
 	glBindFramebuffer(GL_FRAMEBUFFER, skyboxFBO);
-	glClear(GL_COLOR_BUFFER_BIT);
 	glDepthMask(GL_FALSE);
 
 	SetCurrentShader(skybox->getSkyboxShader());
@@ -251,8 +287,7 @@ void Renderer::bindSkyboxBuffer() {
 
 void Renderer::bindEnvBuffer() {
 	glBindFramebuffer(GL_FRAMEBUFFER, envFBO);
-	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
-
+	glEnable(GL_CULL_FACE);
 	if (shadowsActive) {
 		SetCurrentShader(sceneShadowShader);
 		SetShaderLight(*envIllum);
@@ -261,20 +296,15 @@ void Renderer::bindEnvBuffer() {
 		glUniform1i(glGetUniformLocation(currentShader->GetProgram(), "bumpTex"), 1);
 		glUniform1i(glGetUniformLocation(currentShader->GetProgram(), "shadowTex"), 2);
 		glUniform3fv(glGetUniformLocation(currentShader->GetProgram(), "cameraPos"), 1, (float*)&camera->GetPosition());
-
+		
 		glActiveTexture(GL_TEXTURE2);
 		glBindTexture(GL_TEXTURE_2D, shadowST);
 
 		viewMatrix = camera->BuildViewMatrix();
-		projMatrix = Matrix4::Perspective(1.0f, 10000.0f, (float)width / (float)height, 45.0f);		
-		Matrix4 tempMatrix = shadowMatrix * modelMatrix;
-
-		glUniformMatrix4fv(glGetUniformLocation(currentShader->GetProgram(), "textureMatrix"), 1, false, *&textureMatrix.values);
-		glUniformMatrix4fv(glGetUniformLocation(currentShader->GetProgram(), "shadowMatrix"), 1, false, *&tempMatrix.values);
-		glUniformMatrix4fv(glGetUniformLocation(currentShader->GetProgram(), "modelMatrix"), 1, false, *&modelMatrix.values);
+		projMatrix = Matrix4::Perspective(1.0f, 10000.0f, (float)width / (float)height, 45.0f);
 
 		UpdateShaderMatrices();
-		drawNodes();
+		drawNodes(true);
 	}
 	else {
 		SetCurrentShader(sceneShader);
@@ -283,8 +313,7 @@ void Renderer::bindEnvBuffer() {
 		glUniform1i(glGetUniformLocation(currentShader->GetProgram(), "bumpTex"), 1);
 
 		projMatrix = Matrix4::Perspective(1.0f, 10000.0f, (float)width / (float)height, 45.0f);
-		modelMatrix.ToIdentity();
-
+		
 		UpdateShaderMatrices();
 		drawNodes();
 	}
@@ -307,8 +336,13 @@ void Renderer::bindEnvBuffer() {
 		UpdateShaderMatrices();
 		water->Draw();
 	}	
+
+	glCullFace(GL_BACK);
+
 	textureMatrix.ToIdentity();
-	modelMatrix.ToIdentity();
+
+	glDisable(GL_CULL_FACE);
+
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glUseProgram(0);
 }
@@ -316,7 +350,6 @@ void Renderer::bindEnvBuffer() {
 void Renderer::bindPointLightsBuffer() {
 	glBindFramebuffer(GL_FRAMEBUFFER, pointLightFBO);
 	glEnable(GL_CULL_FACE);
-	glClear(GL_COLOR_BUFFER_BIT);
 	SetCurrentShader(pointLights->getPointLightsShader());
 
 	glClearColor(0, 0, 0, 1);
@@ -361,13 +394,13 @@ void Renderer::bindPointLightsBuffer() {
 	glCullFace(GL_BACK);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glClearColor(0.2f, 0.2f, 0.2f, 1);
+	glDisable(GL_CULL_FACE);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glUseProgram(0);
-	glDisable(GL_CULL_FACE);
 }
 
-void Renderer::combineBuffers() {
-	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+void Renderer::bindCombineBuffer() {
+	glBindFramebuffer(GL_FRAMEBUFFER, combinedFBO);
 	SetCurrentShader(combinedShader);
 	projMatrix = Matrix4::Orthographic(-1, 1, 1, -1, -1, 1);	
 	glUniform1i(glGetUniformLocation(currentShader->GetProgram(), "diffuseTex"), 2);
@@ -395,6 +428,29 @@ void Renderer::combineBuffers() {
 
 	viewMatrix = camera->BuildViewMatrix();
 	modelMatrix.ToIdentity();
+
+	UpdateShaderMatrices();
+	viewport->Draw();
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glUseProgram(0);
+}
+
+
+
+void Renderer::fxaaProcess() {
+	SetCurrentShader(fxaaShader);
+	glUniform1i(glGetUniformLocation(currentShader->GetProgram(), "combinedTex"), 2);
+
+	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_2D, combineST);
+
+	Vector2 screenDimension(width, height);
+	glUniform2fv(glGetUniformLocation(currentShader->GetProgram(), "frameBufSize"), 1, (float*)&screenDimension);
+
+	viewMatrix.ToIdentity();
+	modelMatrix.ToIdentity();
+	projMatrix = Matrix4::Orthographic(-1, 1, 1, -1, -1, 1);
 
 	UpdateShaderMatrices();
 	viewport->Draw();
@@ -431,21 +487,32 @@ void Renderer::clearNL() {
 	opaqueNL.clear();
 }
 
-void Renderer::drawNodes() {
+void Renderer::drawNodes(bool shadows) {
 	for (vector<SceneNode*>::const_iterator i = opaqueNL.begin(); i != opaqueNL.end(); ++i) {
-		drawNode((*i));
+		drawNode((*i), shadows);
 	}
 
+	
 	for (vector<SceneNode*>::const_reverse_iterator i = transparentNL.rbegin(); i != transparentNL.rend(); ++i) {
-		drawNode((*i));
-	}
+		drawNode((*i), shadows);
+	}	
 }
 
-void Renderer::drawNode(SceneNode* n) {
+void Renderer::drawNode(SceneNode* n, bool shadows) {
 	if (n->GetMesh()) {
-		glUniformMatrix4fv(glGetUniformLocation(currentShader->GetProgram(), "modelMatrix"), 1, false, (float*) & (n->GetWorldTransform() * Matrix4::Scale(n->GetModelScale())));
-		glUniform4fv(glGetUniformLocation(currentShader->GetProgram(), "nodeColour"), 1, (float*)&n->GetColour());
-		glUniform1i(glGetUniformLocation(currentShader->GetProgram(), "useTexture"), (int)n->GetMesh()->GetTexture());
+		if (shadows) {
+			Matrix4 tempMatrix = shadowMatrix * modelMatrix * n->GetWorldTransform() * Matrix4::Scale(n->GetModelScale());
+
+			glUniformMatrix4fv(glGetUniformLocation(currentShader->GetProgram(), "shadowMatrix"), 1, false, *&tempMatrix.values);
+			glUniformMatrix4fv(glGetUniformLocation(currentShader->GetProgram(), "modelMatrix"), 1, false, (float*)&(modelMatrix * n->GetWorldTransform() * Matrix4::Scale(n->GetModelScale())));
+			glUniform4fv(glGetUniformLocation(currentShader->GetProgram(), "nodeColour"), 1, (float*)&n->GetColour());
+			glUniform1i(glGetUniformLocation(currentShader->GetProgram(), "useTexture"), (int)n->GetMesh()->GetTexture());
+		}
+		else {
+			glUniformMatrix4fv(glGetUniformLocation(currentShader->GetProgram(), "modelMatrix"), 1, false, (float*)&(n->GetWorldTransform() * Matrix4::Scale(n->GetModelScale())));
+			glUniform4fv(glGetUniformLocation(currentShader->GetProgram(), "nodeColour"), 1, (float*)&n->GetColour());
+			glUniform1i(glGetUniformLocation(currentShader->GetProgram(), "useTexture"), (int)n->GetMesh()->GetTexture());
+		}
 		n->Draw();
 	}
 }

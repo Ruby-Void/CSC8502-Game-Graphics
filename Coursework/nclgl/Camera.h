@@ -28,6 +28,9 @@ public:
 	float GetRoll() const { return roll; }
 	void SetRoll(float r) { roll = r; }
 
+	bool GetFreeCamera() const { return freeCamera; }
+	void SetFreeCamera(bool free) { freeCamera = free; }
+
 protected:
 	bool freeCamera = false, inverse = false;
 	float yaw, pitch, roll;

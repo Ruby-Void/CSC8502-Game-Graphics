@@ -20,8 +20,7 @@ in Vertex{
 } IN;
 
 out vec4 fragColour[2];void main(void) {
-	vec3 BN = normalize(cross(normalize(IN.normal), normalize(IN.tangent)));
-	mat3 TBN = mat3(normalize(IN.tangent), -BN, normalize(IN.normal));
+	mat3 TBN = mat3(normalize(IN.tangent), -IN.binormal, normalize(IN.normal));
 	vec3 normal = normalize(TBN * (texture2D (bumpTex, IN.texCoord).rgb * 2.0 - 1.0));
 
 	vec4 diffuse = texture2D (diffuseTex, IN.texCoord);

@@ -501,7 +501,7 @@ void Renderer::drawNodes(bool shadows) {
 void Renderer::drawNode(SceneNode* n, bool shadows) {
 	if (n->GetMesh()) {
 		if (shadows) {
-			Matrix4 tempMatrix = shadowMatrix * modelMatrix * n->GetWorldTransform() * Matrix4::Scale(n->GetModelScale());
+			Matrix4 tempMatrix = shadowMatrix * modelMatrix * n->GetWorldTransform()* Matrix4::Scale(n->GetModelScale());
 
 			glUniformMatrix4fv(glGetUniformLocation(currentShader->GetProgram(), "shadowMatrix"), 1, false, *&tempMatrix.values);
 			glUniformMatrix4fv(glGetUniformLocation(currentShader->GetProgram(), "modelMatrix"), 1, false, (float*)&(modelMatrix * n->GetWorldTransform() * Matrix4::Scale(n->GetModelScale())));

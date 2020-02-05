@@ -1,6 +1,1 @@
-﻿  Renderer.cpp
-C:\Users\b9059529\Documents\C++\Coursework\CSC8502-Game-Graphics\Coursework\Graphics For Games\Graphics Coursework\Renderer.cpp(5,78): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\b9059529\Documents\C++\Coursework\CSC8502-Game-Graphics\Coursework\Graphics For Games\Graphics Coursework\Renderer.cpp(5,65): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\b9059529\Documents\C++\Coursework\CSC8502-Game-Graphics\Coursework\Graphics For Games\Graphics Coursework\Renderer.cpp(448,33): warning C4244: 'argument': conversion from 'int' to 'const float', possible loss of data
-C:\Users\b9059529\Documents\C++\Coursework\CSC8502-Game-Graphics\Coursework\Graphics For Games\Graphics Coursework\Renderer.cpp(448,26): warning C4244: 'argument': conversion from 'int' to 'const float', possible loss of data
-  GraphicsCoursework.vcxproj -> C:\Users\b9059529\Documents\C++\Coursework\CSC8502-Game-Graphics\Coursework\Graphics For Games\Debug\GraphicsCoursework.exe
+﻿  GraphicsCoursework.vcxproj -> C:\Users\b9059529\Documents\Coursework\CSC8502-Game-Graphics\CSC8502-Game-Graphics\Coursework\Graphics For Games\Debug\GraphicsCoursework.exe
